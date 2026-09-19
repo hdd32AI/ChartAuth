@@ -68,8 +68,8 @@ for (const [browserName, engine] of [['chromium', chromium], ['webkit', webkit]]
         }
         for (let chapter = 0; chapter < 6; chapter++) {
           await page.locator(`[data-chapter="${chapter}"]`).click();
+          await page.locator(`[data-chapter="${chapter}"][aria-selected="true"]`).waitFor();
           await check(`walkthrough-${chapter + 1}`);
-          assert.ok(await page.locator(`[data-chapter="${chapter}"]`).evaluate((el) => el.classList.contains('active')), `${prefix}: chapter ${chapter + 1} did not advance`);
         }
         await navigate('worklist');
         await page.locator('.work-table tbody tr').first().waitFor();
