@@ -8,10 +8,10 @@ window.LAB_PUBLIC_KEY =
   const base = new URL('.', document.currentScript?.src || document.baseURI);
   const style = document.createElement('link');
   style.rel = 'stylesheet';
-  style.href = new URL('mobile.css?v=20260919-1', base).href;
+  style.href = new URL('mobile.css?v=20260919-2', base).href;
   style.addEventListener('load', () => {
     const script = document.createElement('script');
-    script.src = new URL('mobile.js?v=20260919-1', base).href;
+    script.src = new URL('mobile.js?v=20260919-2', base).href;
     script.defer = true;
     document.head.append(script);
   }, { once: true });

@@ -17,7 +17,7 @@ async function ready(page) {
 }
 async function audit(page, label, mobile = true) {
   const result = await page.evaluate(() => {
-    const width = window.innerWidth, header = document.querySelector('.mobile-header');
+    const width = document.documentElement.clientWidth, header = document.querySelector('.mobile-header');
     const brand = header.querySelector('.brand, .reader-brand'), button = header.querySelector('.mobile-menu-toggle');
     const b = brand.getBoundingClientRect(), h = header.getBoundingClientRect(), t = button.getBoundingClientRect();
     const rect = (r) => ({ left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height });
@@ -31,9 +31,10 @@ async function audit(page, label, mobile = true) {
       sticky: getComputedStyle(header).position, progressCount: header.querySelectorAll('.mobile-progress-step').length,
       rootOverflow: getComputedStyle(document.documentElement).overflowX, menuHidden: header.querySelector('.mobile-main-menu').hidden, offenders };
   });
-  reports.push({ label, ...result }); console.log(JSON.stringify({ label, ...result }));
-  assert.ok(result.documentWidth <= result.width + 1, `${label}: document overflows ${JSON.stringify(result)}`);
-  assert.ok(result.bodyWidth <= result.width + 1, `${label}: body overflows`);
+  const expectedWidth = page.viewportSize().width;
+  reports.push({ label, expectedWidth, ...result }); console.log(`AUDIT ${label}`);
+  assert.ok(result.documentWidth <= expectedWidth + 1, `${label}: document overflows ${JSON.stringify(result)}`);
+  assert.ok(result.bodyWidth <= expectedWidth + 1, `${label}: body overflows`);
   if (mobile) {
     assert.ok(result.centeredBy <= 1.5, `${label}: brand center is ${result.centeredBy}px off`);
     assert.equal(result.sticky, 'sticky', `${label}: header is not sticky`);
@@ -74,6 +75,9 @@ try {
           assert.ok(heading.y <= header.height + 20, `${name}: anchor offset leaves excess blank space`);
           assert.equal(await page.locator('.mobile-progress-step[aria-current="location"] .mobile-progress-label').textContent(), 'Demo');
           await audit(page, `${name}-walkthrough`); await shot(page, `${name}-walkthrough`);
+          for (const section of ['Care', 'Logic', 'Build', 'Value']) {
+            await jump(page, section); await audit(page, `${name}-${section}`); await shot(page, `${name}-${section}`);
+          }
           await page.locator('.mobile-menu-toggle').click();
           assert.equal(await page.locator('.mobile-menu-toggle').getAttribute('aria-expanded'), 'true');
           await page.keyboard.press('Escape');
@@ -83,6 +87,8 @@ try {
           await page.waitForSelector('.work-table tbody tr button'); await page.waitForTimeout(200);
           await audit(page, `${name}-worklist`); await jump(page, 'Visits'); await shot(page, `${name}-visits`);
           assert.ok(await page.locator('.work-table tbody td').first().getAttribute('data-mobile-label'), `${name}: mobile cards lack labels`);
+          const hiddenCells = await page.locator('.work-table tbody tr').first().locator('td').evaluateAll((cells) => cells.filter((cell) => getComputedStyle(cell).display === 'none').length);
+          assert.equal(hiddenCells, 0, `${name}: patient columns were hidden instead of reflowed`);
           await page.locator('.work-table tbody tr button').first().click();
           await page.waitForSelector('#case-view:not([hidden])'); await page.waitForTimeout(200);
           await audit(page, `${name}-patient`); await shot(page, `${name}-patient`);
@@ -101,11 +107,16 @@ try {
           await page.waitForTimeout(150);
           const access = await page.evaluate(() => {
             const b = document.querySelector('.access-brand').getBoundingClientRect();
-            return { width: innerWidth, documentWidth: document.documentElement.scrollWidth, centeredBy: Math.abs((b.left + b.right) / 2 - innerWidth / 2) };
+            return { width: document.documentElement.clientWidth, documentWidth: document.documentElement.scrollWidth, centeredBy: Math.abs((b.left + b.right) / 2 - document.documentElement.clientWidth / 2) };
           });
           reports.push({ label: `${name}-access`, ...access });
-          assert.ok(access.documentWidth <= access.width + 1 && access.centeredBy <= 1.5, `${name}: access layout failed`);
+          assert.ok(access.documentWidth <= width + 1 && access.centeredBy <= 1.5, `${name}: access layout failed`);
           await shot(page, `${name}-access`);
+          await page.locator('#access-password').fill('visibility test only');
+          await page.locator('#access-show').click();
+          assert.equal(await page.locator('#access-password').getAttribute('type'), 'text');
+          await page.locator('#access-show').click();
+          assert.equal(await page.locator('#access-password').getAttribute('type'), 'password');
           assert.deepEqual(errors, [], `${name}: browser exceptions`);
         } catch (error) {
           failures.push({ name, error: error.stack }); await shot(page, `${name}-FAIL`).catch(() => {});
