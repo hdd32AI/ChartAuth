@@ -69,6 +69,7 @@ for (const [browserName, engine] of [['chromium', chromium], ['webkit', webkit]]
         for (let chapter = 0; chapter < 6; chapter++) {
           await page.locator(`[data-chapter="${chapter}"]`).click();
           await check(`walkthrough-${chapter + 1}`);
+          assert.ok(await page.locator(`[data-chapter="${chapter}"]`).evaluate((el) => el.classList.contains('active')), `${prefix}: chapter ${chapter + 1} did not advance`);
         }
         await navigate('worklist');
         await page.locator('.work-table tbody tr').first().waitFor();
@@ -79,6 +80,7 @@ for (const [browserName, engine] of [['chromium', chromium], ['webkit', webkit]]
         await page.locator('#back-queue').click();
         for (const name of ['research', 'production', 'impact']) { await navigate(name); await check(name); }
         if (mobile) {
+          assert.equal(await page.locator('.ca-progress-label').textContent(), 'Impact', 'Impact navigation has excess offset');
           await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
           await page.waitForTimeout(250);
           assert.equal(await page.locator('.ca-section-dot[data-complete="true"]').count(), await page.locator('.ca-section-dot').count());
@@ -96,6 +98,14 @@ for (const [browserName, engine] of [['chromium', chromium], ['webkit', webkit]]
         if (mobile) {
           const offset = await page.locator('.access-wordmark').evaluate((el) => Math.abs(el.getBoundingClientRect().left + el.getBoundingClientRect().width / 2 - innerWidth / 2));
           assert.ok(offset < 1.1, `Access wordmark is off center by ${offset}px`);
+          const toggle = page.locator('.access-password-wrap button');
+          const toggleBox = await toggle.boundingBox();
+          assert.ok(toggleBox.width >= 44, 'Password toggle is cramped');
+          assert.equal(await toggle.evaluate((el) => getComputedStyle(el).whiteSpace), 'nowrap');
+          await toggle.click();
+          assert.equal(await page.locator('#access-password').getAttribute('type'), 'text');
+          await toggle.click();
+          assert.equal(await page.locator('#access-password').getAttribute('type'), 'password');
         }
         assert.deepEqual(errors, [], `${prefix}: browser errors`);
         console.log(`PASS ${prefix}: gate, seven sections, six demo chapters, navigation, worklist, case, research, production, impact, specifications`);
