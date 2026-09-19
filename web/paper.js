@@ -1,3 +1,7 @@
+// Keep page fragments on the Notes route despite the shared asset base URL.
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.href = new URL(anchor.getAttribute("href"), window.location.href).href;
+});
 const chapters = [...document.querySelectorAll(".note-chapter")],
   links = [...document.querySelectorAll(".reading-toc a")];
 document.getElementById("note-search").addEventListener("input", (e) => {
