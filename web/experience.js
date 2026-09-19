@@ -29,6 +29,122 @@ let chapter = 0,
   generation = 0,
   playIntent = 0,
   loadId = 0;
+const speech =
+  typeof window.SpeechSynthesisUtterance === "function" &&
+  typeof window.speechSynthesis?.getVoices === "function"
+    ? window.speechSynthesis
+    : null;
+let narrationVoice = null,
+  narrationUtterance = null,
+  narrationChapter = -1,
+  narrationState = speech ? "loading" : "unavailable",
+  speechTimeout = null;
+function updateNarrationControl() {
+  const button = $("demo-narrate");
+  button.disabled = loading || !narrationVoice;
+  button.setAttribute(
+    "aria-pressed",
+    String(voice && playing && narrationState === "on"),
+  );
+  button.textContent = !narrationVoice
+    ? narrationState === "loading"
+      ? "Loading voice…"
+      : "Captions only"
+    : !voice
+      ? narrationState === "error"
+        ? "Retry narration"
+        : "Narration off"
+      : narrationState === "starting"
+        ? "Starting narration…"
+        : playing
+          ? "Narration on"
+          : "Resume narration";
+  button.title = !narrationVoice
+    ? "Voice narration is unavailable in this browser. The walkthrough captions remain available."
+    : narrationState === "error"
+      ? "Narration could not play. Select to retry; captions remain available."
+      : voice && playing
+        ? "Turn off voice narration. Captions stay on."
+        : "Play the walkthrough with this browser’s voice narration.";
+}
+function stopNarration() {
+  clearTimeout(speechTimeout);
+  speechTimeout = null;
+  // Keep each utterance alive until it ends, and ignore cancelled callbacks.
+  narrationUtterance = null;
+  narrationChapter = -1;
+  if (speech) speech.cancel();
+}
+function narrationFailed() {
+  voice = false;
+  stopNarration();
+  narrationState = "error";
+  updateNarrationControl();
+}
+function narrateChapter(n) {
+  if (!voice || !narrationVoice || narrationChapter === n) return;
+  stopNarration();
+  const utterance = new window.SpeechSynthesisUtterance(captions[n]);
+  narrationUtterance = utterance;
+  narrationChapter = n;
+  narrationState = "starting";
+  utterance.voice = narrationVoice;
+  utterance.lang = narrationVoice.lang;
+  utterance.rate = 0.98;
+  utterance.onstart = () => {
+    if (narrationUtterance !== utterance) return;
+    clearTimeout(speechTimeout);
+    narrationState = "on";
+    updateNarrationControl();
+    speechTimeout = setTimeout(narrationFailed, 20000);
+  };
+  utterance.onend = () => {
+    if (narrationUtterance !== utterance) return;
+    clearTimeout(speechTimeout);
+    speechTimeout = null;
+    narrationUtterance = null;
+    updateNarrationControl();
+  };
+  utterance.onerror = () => {
+    if (narrationUtterance === utterance) narrationFailed();
+  };
+  updateNarrationControl();
+  speechTimeout = setTimeout(() => {
+    if (narrationUtterance === utterance) narrationFailed();
+  }, 4000);
+  try {
+    // Called synchronously from Play/Narration before any backend await.
+    speech.resume();
+    speech.speak(utterance);
+  } catch {
+    narrationFailed();
+  }
+}
+function refreshNarrationVoices() {
+  let voices = [];
+  try {
+    voices = speech?.getVoices() || [];
+  } catch {
+    narrationState = "unavailable";
+  }
+  const english = voices.filter((v) => /^en(?:-|$)/i.test(v.lang));
+  narrationVoice =
+    english.find((v) => v.localService && v.default) ||
+    english.find((v) => v.localService) ||
+    english.find((v) => v.default) ||
+    english[0] ||
+    voices.find((v) => v.default) ||
+    voices[0] ||
+    null;
+  if (narrationVoice && ["loading", "unavailable"].includes(narrationState))
+    narrationState = "off";
+  if (!narrationVoice && voice) {
+    voice = false;
+    stopNarration();
+    narrationState = "unavailable";
+  }
+  updateNarrationControl();
+}
 const escape = (s) =>
   String(s ?? "").replace(
     /[&<>"']/g,
@@ -143,12 +259,7 @@ function show(n) {
     );
   $("demo-cursor").style.transform =
     `translate(${[0, -40, -130, -30, -15, -155][n]}px,${[0, -80, -70, -20, -5, -60][n]}px)`;
-  if (voice && playing && "speechSynthesis" in window) {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(captions[n]);
-    u.rate = 0.98;
-    speechSynthesis.speak(u);
-  }
+  if (voice && playing) narrateChapter(n);
 }
 async function api(route, payload, requestGeneration = generation) {
   const headers = {
@@ -228,6 +339,7 @@ function setLoading(value) {
     .querySelectorAll("[data-chapter]")
     .forEach((b) => (b.disabled = value));
   $("demo-stage").setAttribute("aria-busy", String(value));
+  updateNarrationControl();
 }
 function resetDemo() {
   generation++;
@@ -314,8 +426,10 @@ function pause() {
   clearInterval(timer);
   timer = null;
   $("demo-play").textContent = "▶";
-  $("demo-play").setAttribute("aria-label", "Pause walkthrough");
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("demo-play").setAttribute("aria-label", "Play walkthrough");
+  stopNarration();
+  if (voice) narrationState = "paused";
+  updateNarrationControl();
 }
 async function play() {
   if (playing) {
@@ -324,9 +438,11 @@ async function play() {
   }
   if (elapsed >= 36) resetDemo();
   const intent = ++playIntent,
-    requestGeneration = generation;
+    requestGeneration = generation,
+    nextChapter = Math.min(5, Math.floor(elapsed / 6));
+  if (voice) narrateChapter(nextChapter);
   if (
-    !(await ensure(Math.min(5, Math.floor(elapsed / 6)))) ||
+    !(await ensure(nextChapter)) ||
     intent !== playIntent ||
     requestGeneration !== generation
   )
@@ -334,7 +450,8 @@ async function play() {
   playing = true;
   $("demo-play").textContent = "Ⅱ";
   $("demo-play").setAttribute("aria-label", "Pause walkthrough");
-  show(Math.min(5, Math.floor(elapsed / 6)));
+  show(nextChapter);
+  updateNarrationControl();
   timer = setInterval(async () => {
     if (
       loading ||
@@ -343,8 +460,12 @@ async function play() {
       requestGeneration !== generation
     )
       return;
-    elapsed += 0.25;
-    const n = Math.min(5, Math.floor(elapsed / 6));
+    const nextElapsed = elapsed + 0.25,
+      n = Math.min(5, Math.floor(nextElapsed / 6));
+    // Give a spoken caption time to finish instead of cutting it off at 6s.
+    if (voice && narrationUtterance && (n !== chapter || nextElapsed >= 36))
+      return;
+    elapsed = nextElapsed;
     if (n !== chapter) {
       if (
         !(await ensure(n)) ||
@@ -390,12 +511,31 @@ $("watch-demo").onclick = () => {
   play();
 };
 $("demo-narrate").onclick = () => {
-  voice = !voice;
-  $("demo-narrate").textContent = voice ? "Narration on" : "Narration off";
-  $("demo-narrate").setAttribute("aria-pressed", String(voice));
-  if (voice && playing) show(chapter);
-  else if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if (loading || !narrationVoice) return;
+  if (voice && playing) {
+    voice = false;
+    stopNarration();
+    narrationState = "off";
+    updateNarrationControl();
+    return;
+  }
+  voice = true;
+  if (playing) narrateChapter(chapter);
+  else play();
 };
+$("demo-narrate").setAttribute("aria-live", "polite");
+$("demo-narrate").setAttribute("aria-controls", "demo-caption");
+refreshNarrationVoices();
+if (speech) {
+  speech.addEventListener("voiceschanged", refreshNarrationVoices);
+  setTimeout(() => {
+    refreshNarrationVoices();
+    if (!narrationVoice) {
+      narrationState = "unavailable";
+      updateNarrationControl();
+    }
+  }, 3000);
+}
 const comparisons = {
   A: {
     member: "SYN-M401",

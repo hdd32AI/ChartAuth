@@ -6,19 +6,19 @@ export default `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
-<title>ChartAuth.ai</title>
+<title>ChartAuth</title>
 <link rel="apple-touch-icon" href="/assets/ChartAuth_Avatar.png">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="experience.css">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ChartAuth.ai">
-<meta property="og:image" content="https://chartauth.ai/assets/ChartAuth_Share.jpg">
+<meta property="og:title" content="ChartAuth">
+<meta property="og:image" content="https://chartauth.ai/assets/ChartAuth_Share_v2.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ChartAuth.ai">
+<meta property="og:image:alt" content="ChartAuth">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ChartAuth.ai">
-<meta name="twitter:image" content="https://chartauth.ai/assets/ChartAuth_Share.jpg">
+<meta name="twitter:title" content="ChartAuth">
+<meta name="twitter:image" content="https://chartauth.ai/assets/ChartAuth_Share_v2.jpg">
 <link rel="stylesheet" href="sources.css">
 </head>
 <body>
@@ -34,11 +34,8 @@ export default `<!doctype html>
 <button data-page="research" class="navlink">Research</button>
 <button data-page="production" class="navlink">Production</button>
 <button data-page="impact" class="navlink">Impact</button>
-<a href="notes" class="navlink">Read notes ↗</a>
+<a href="notes" class="navlink">Specifications ↗</a>
 </nav>
-<span class="environment">
-<i>
-</i>Independent project</span>
 </header>
 <main>
 <section id="overview" class="page active">
@@ -256,7 +253,7 @@ export default `<!doctype html>
 <h3>Inspect the runnable source</h3>
 <p>50 scenarios, a verifier and executable checks.</p>
 </div>
-<b>ZIP ↓</b>
+<b>Repository ↗</b>
 </a>
 <button data-page="production">
 <span>03</span>
@@ -278,27 +275,27 @@ export default `<!doctype html>
 </div>
 <div class="impact-grid">
 <div class="impact-inputs">
-<label>Monthly eligibility checks<output id="roi-volume-value">
+<label for="roi-volume">Monthly eligibility checks<output id="roi-volume-value">
 </output>
 <input id="roi-volume" type="range" min="100" max="10000" step="100" value="1000">
 </label>
-<label>Net minutes saved per check<output id="roi-minutes-value">
+<label for="roi-minutes">Net minutes saved per check<output id="roi-minutes-value">
 </output>
 <input id="roi-minutes" type="range" min="0" max="20" step="0.5" value="5">
 </label>
-<label>Loaded hourly labor cost<output id="roi-rate-value">
+<label for="roi-rate">Loaded hourly labor cost<output id="roi-rate-value">
 </output>
 <input id="roi-rate" type="range" min="15" max="100" step="1" value="35">
 </label>
-<label>Capacity converted to economic benefit<output id="roi-realization-value">
+<label for="roi-realization">Capacity converted to economic benefit<output id="roi-realization-value">
 </output>
 <input id="roi-realization" type="range" min="0" max="100" step="5" value="70">
 </label>
-<label>Monthly operating cost<output id="roi-monthlyCost-value">
+<label for="roi-monthlyCost">Monthly operating cost<output id="roi-monthlyCost-value">
 </output>
 <input id="roi-monthlyCost" type="range" min="0" max="10000" step="100" value="1000">
 </label>
-<label>One-time implementation cost<output id="roi-setupCost-value">
+<label for="roi-setupCost">One-time implementation cost<output id="roi-setupCost-value">
 </output>
 <input id="roi-setupCost" type="range" min="0" max="50000" step="500" value="6000">
 </label>
@@ -363,7 +360,7 @@ export default `<!doctype html>
 </section> <section class="prepared-for">
 <div>
 <span class="section-label">HEALTHCARE PRACTICE × SUPERVISED LEARNING</span>
-<p>An independent project by Hursh Desai.</p>
+<p>Eligibility. Evidence. Accountable handoffs.</p>
 </div>
 <div class="partner-lockup">
 <a href="https://www.flaglerhealth.io/" target="_blank" rel="noreferrer">
@@ -374,7 +371,7 @@ export default `<!doctype html>
 <img src="assets/alaska.png" alt="Alaska AI">
 </a>
 </div>
-<small>Reference organizations. Independent project; no affiliation or endorsement.</small>
+<small>Reference organizations; no affiliation or endorsement.</small>
 </section>
 </section>
 <section id="worklist" class="page">
@@ -713,10 +710,10 @@ export default `<!doctype html>
 <button id="cost-start" class="active">At start</button>
 <button id="cost-mature">After 500</button>
 </div>
-<label>Authoring minutes <output id="author-value">60</output>
+<label for="author-min">Authoring minutes <output id="author-value">60</output>
 <input id="author-min" type="range" min="10" max="90" value="60" step="5">
 </label>
-<label>Accepted yield <output id="yield-value">85%</output>
+<label for="yield">Accepted yield <output id="yield-value">85%</output>
 <input id="yield" type="range" min="50" max="100" value="85">
 </label>
 <div class="cost-result">
@@ -753,11 +750,11 @@ export default `<!doctype html>
 </dialog>
 </main>
 <footer>
-<a href="notes">Research paper</a>
-<a href="notes#notes">Hursh’s notes</a>
+<a href="notes">Specifications</a>
+<a href="notes#notes">Project notes</a>
 <a href="notes#sources">Sources &amp; technology</a>
 <button id="definitions-open">Key definitions</button>
-<span>ChartAuth · Fictional demonstration data</span>
+<span>ChartAuth © 2026</span>
 </footer>
 <script>window.LAB_ACCESS_TOKEN=localStorage.getItem("chartauth_access")||"";</script>
 <script src="config.js">

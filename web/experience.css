@@ -37,10 +37,14 @@ body {
   display: none;
 }
 .navlink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0;
   border-bottom-width: 2px;
+  text-decoration: none;
 }
 .environment {
   font-size: 11px;
@@ -62,9 +66,17 @@ main {
   padding: 0;
 }
 .editorial-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  column-gap: 60px;
+  row-gap: 24px;
   max-width: 1240px;
   margin: auto;
-  padding: 66px 32px 53px;
+  padding: 56px 32px 48px;
+}
+.editorial-hero > .eyebrow {
+  grid-column: 1 / -1;
+  margin: 0;
 }
 .eyebrow,
 .section-label {
@@ -74,24 +86,25 @@ main {
   color: #647469;
 }
 .editorial-hero h1 {
+  grid-column: 1;
+  grid-row: 2;
   font-family: Lora, Georgia, serif;
   font-size: 76px;
   line-height: 1.08;
   letter-spacing: -3.5px;
   font-weight: 400;
-  margin: 20px 0 31px;
+  margin: 0;
 }
 .editorial-hero h1 em {
   font-weight: 400;
   color: #526957;
 }
 .hero-bottom {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 50px;
+  display: contents;
 }
 .hero-bottom > p {
+  grid-column: 1;
+  grid-row: 3;
   font-size: 17px;
   line-height: 1.8;
   max-width: 590px;
@@ -99,11 +112,16 @@ main {
   color: #606e66;
 }
 .hero-actions {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  align-self: center;
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 13px;
   flex-shrink: 0;
+  min-width: 0;
+  margin: 0;
 }
 .primary {
   background: #2858b2;
@@ -878,20 +896,68 @@ footer {
 .production-grid {
   gap: 65px;
 }
+.production-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: start;
+}
+#production .pageheading > div {
+  min-width: 0;
+}
+#production .pageheading h1 {
+  max-width: 24ch;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.18;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+#production .pageheading p {
+  max-width: 72ch;
+}
 .research-controls,
 .probe-visual,
 .cost-panel {
   border-radius: 3px;
   box-shadow: none;
 }
+.vertical-flow {
+  min-width: 0;
+  padding: 0;
+  border-top: 1px solid #d9dfd5;
+}
 .page .vertical-flow article {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 20px;
+  padding: 28px 0;
   border-radius: 0;
   border-left: 0;
   border-bottom: 1px solid #d9dfd5;
   background: none;
 }
 .page .vertical-flow article b {
+  min-width: 0;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
   color: #2858b2;
+}
+#production .vertical-flow article::before {
+  content: none;
+  display: none;
+}
+.vertical-flow article > div {
+  min-width: 0;
+}
+.vertical-flow h3 {
+  margin: 0 0 10px;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+.vertical-flow p {
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: break-word;
 }
 .research-conclusion,
 .design-foot {
@@ -902,6 +968,18 @@ footer {
 .design-foot h2 {
   font-family: Lora;
   font-weight: 400;
+}
+.design-foot {
+  padding: 24px;
+  margin-top: 32px;
+}
+.design-foot h2 {
+  line-height: 1.3;
+}
+.design-foot p {
+  max-width: 78ch;
+  font-size: 14px;
+  line-height: 1.75;
 }
 .starting-episode:after {
   content: "Opening a fresh episode…";
@@ -1026,11 +1104,12 @@ a:focus-visible {
   .environment {
     display: none;
   }
-  .editorial-hero h1 {
-    font-size: 65px;
+  .editorial-hero {
+    grid-template-columns: minmax(0, 1fr) 250px;
+    column-gap: 32px;
   }
-  .hero-bottom {
-    gap: 30px;
+  .editorial-hero h1 {
+    font-size: clamp(48px, 6.2vw, 65px);
   }
   .demo-body {
     grid-template-columns: 155px minmax(0, 1fr) 180px;
@@ -1072,6 +1151,12 @@ a:focus-visible {
     top: 100px;
   }
 }
+@media (max-width: 900px) {
+  .production-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+}
 @media (max-width: 720px) {
   .topbar {
     height: auto;
@@ -1093,11 +1178,13 @@ a:focus-visible {
     padding: 9px 4px;
   }
   .editorial-hero {
+    display: block;
     padding: 38px 22px;
   }
   .editorial-hero h1 {
     font-size: 48px;
     letter-spacing: -2px;
+    margin: 20px 0 24px;
   }
   .hero-bottom {
     display: block;
@@ -1322,6 +1409,17 @@ a:focus-visible {
   }
   .cost-panel {
     margin-top: 30px;
+  }
+  .page .vertical-flow article {
+    grid-template-columns: 32px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 24px 0;
+  }
+  .page .vertical-flow article b {
+    font-size: 22px;
+  }
+  .design-foot {
+    padding: 18px;
   }
   .hero-actions .primary {
     padding: 13px 19px;

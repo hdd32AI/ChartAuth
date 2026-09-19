@@ -4,18 +4,18 @@ export default `<!doctype html>
 <script>(()=>{const b=document.createElement("base");b.href=location.pathname.startsWith("/chartauth")?"/chartauth/":"/";document.head.append(b)})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ChartAuth.ai</title>
+<title>Specifications · ChartAuth</title>
 <link rel="apple-touch-icon" href="/assets/ChartAuth_Avatar.png">
 <link rel="stylesheet" href="paper.css">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ChartAuth.ai">
-<meta property="og:image" content="https://chartauth.ai/assets/ChartAuth_Share.jpg">
+<meta property="og:title" content="ChartAuth">
+<meta property="og:image" content="https://chartauth.ai/assets/ChartAuth_Share_v2.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ChartAuth.ai">
+<meta property="og:image:alt" content="ChartAuth">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ChartAuth.ai">
-<meta name="twitter:image" content="https://chartauth.ai/assets/ChartAuth_Share.jpg">
+<meta name="twitter:title" content="ChartAuth">
+<meta name="twitter:image" content="https://chartauth.ai/assets/ChartAuth_Share_v2.jpg">
 <link rel="stylesheet" href="sources.css">
 </head>
 <body>
@@ -24,8 +24,8 @@ export default `<!doctype html>
 <header class="reader-header">
 <a class="reader-brand" href="./"><img src="assets/mark.svg" width="30" height="30" alt=""><span>CHARTAUTH<small>AI</small></span></a>
 <nav>
-<a href="#overview">Notes</a>
-<a href="#notes">Notes</a>
+<a href="#overview">Overview</a>
+<a href="#notes">Design notes</a>
 <a href="https://github.com/hdd32AI/ChartAuth" target="_blank" rel="noreferrer">GitHub ↗</a>
 <a href="worklist">Open workspace ↗</a>
 </nav>
@@ -36,7 +36,7 @@ export default `<!doctype html>
 <h1>Following the evidence<br>
 <em>through the work.</em>
 </h1>
-<p class="paper-byline">Hursh Desai · Research, workflow design and production notes</p>
+<p class="paper-byline">Research, workflow design and production specification</p>
 <div class="paper-deck">A plain-English account of the scoring gap, the eligibility environment and the decisions behind the design.</div>
 </section>
 <section class="paper-abstract">
@@ -84,7 +84,7 @@ export default `<!doctype html>
 </section>
 <section class="notes-intro" id="notes">
 <span class="chapter-kicker">THE LONGER READ</span>
-<h2>Hursh’s Notes on ChartAuth</h2>
+<h2>Design notes on ChartAuth</h2>
 <p>Thirty chapters, from the first design question to the production and financial model. Read in order or choose the part you want to challenge.</p>
 <label class="reader-search">Find a topic<input id="note-search" type="search" placeholder="Try identity, cost, review or reward">
 </label>
