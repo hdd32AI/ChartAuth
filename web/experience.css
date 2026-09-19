@@ -519,6 +519,11 @@ main {
 .voice-control {
   white-space: nowrap;
 }
+.voice-control:disabled {
+  opacity: 1;
+  color: #a9b9ca;
+  cursor: default;
+}
 .chapter-tabs {
   position: relative;
   display: flex;
@@ -606,7 +611,7 @@ main {
 .decision-layout p {
   font-size: 14px;
   line-height: 1.9;
-  color: #748078;
+  color: #606e66;
   max-width: 450px;
 }
 .decision-choices {
@@ -732,11 +737,11 @@ main {
 .evidence-layout p {
   font-size: 14px;
   line-height: 1.9;
-  color: #717f74;
+  color: #606e66;
 }
 .evidence-layout small {
   font-size: 10px;
-  color: #99a393;
+  color: #65706a;
   display: block;
   margin-top: 18px;
 }
@@ -752,7 +757,7 @@ main {
 }
 .production-preview-head p {
   font-size: 13px;
-  color: #778376;
+  color: #65706a;
   line-height: 1.9;
   max-width: 330px;
 }
@@ -786,7 +791,7 @@ main {
 }
 .deliverable-rows p {
   font-size: 11px;
-  color: #8a9484;
+  color: #65706a;
   margin: 0;
 }
 .deliverable-rows b {
@@ -1271,10 +1276,25 @@ a:focus-visible {
     font-size: 12px;
   }
   .voice-control {
-    font-size: 9px;
+    font-size: 12px;
+    min-height: 44px;
+    margin-left: auto;
   }
   .cinema-controls {
     gap: 10px;
+    flex-wrap: wrap;
+  }
+  .player-button {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+  .player-restart {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .demo-progress {
+    min-width: 48px;
   }
   .chapter-tabs {
     display: grid;
@@ -1282,8 +1302,17 @@ a:focus-visible {
     gap: 8px;
   }
   .chapter-tabs button {
-    font-size: 9px;
+    font-size: 12px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 12px 0;
+  }
+  .chapter-tabs button span {
+    font-size: 12px;
+  }
+  .light-button {
+    min-height: 44px;
+    font-size: 12px;
   }
   .demo-under {
     flex-wrap: wrap;
@@ -1968,7 +1997,9 @@ img.chartauth-mark {
 }
 
 .care-purpose {
-  padding: 90px 0;
+  max-width: 1240px;
+  margin: auto;
+  padding: 76px 32px;
   border-top: 1px solid var(--line, #dce3e5);
 }
 .care-purpose h2 {
@@ -1977,6 +2008,7 @@ img.chartauth-mark {
     serif;
   letter-spacing: -1px;
   max-width: 850px;
+  overflow-wrap: break-word;
 }
 .care-purpose h2 em {
   color: #345f88;
@@ -2015,13 +2047,13 @@ img.chartauth-mark {
   color: #28445e;
   font-weight: 600;
 }
-@media (max-width: 700px) {
+@media (max-width: 720px) {
   .care-cards {
     grid-template-columns: 1fr;
     gap: 20px;
   }
   .care-purpose {
-    padding: 55px 0;
+    padding: 55px 20px;
   }
 }
 
@@ -2085,5 +2117,26 @@ img.chartauth-mark {
 @media (max-width: 400px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 720px) {
+  #overview {
+    --home-gutter: 20px;
+  }
+  #overview > .editorial-hero,
+  #overview > .cinema,
+  #overview > .care-purpose,
+  #overview > .decision-section,
+  #overview > .evidence-section,
+  #overview > .production-preview,
+  #overview > .impact-section,
+  #overview > .prepared-for {
+    padding-left: var(--home-gutter);
+    padding-right: var(--home-gutter);
+  }
+}
+@media (max-width: 380px) {
+  #overview {
+    --home-gutter: 18px;
   }
 }

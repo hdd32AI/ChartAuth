@@ -573,7 +573,7 @@ document
 compare("A");
 show(0);
 document
-  .querySelectorAll("[data-page]")
+  .querySelectorAll("button[data-page]")
   .forEach((b) => b.addEventListener("click", pause));
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) pause();
