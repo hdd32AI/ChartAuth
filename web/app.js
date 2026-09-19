@@ -1,5 +1,10 @@
 import { suggestAssessment } from "./suggestions.js";
 const $ = (id) => document.getElementById(id);
+const scrollBehavior = () =>
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth";
 let token = "",
   obs = null,
   currentCase = "A",
@@ -106,8 +111,8 @@ function page(name, push = true) {
   if (name === "impact")
     document
       .getElementById("impact")
-      .scrollIntoView({ behavior: "smooth", block: "start" });
-  else window.scrollTo({ top: 0, behavior: "smooth" });
+      .scrollIntoView({ behavior: scrollBehavior(), block: "start" });
+  else window.scrollTo({ top: 0, behavior: scrollBehavior() });
 }
 function restoreRoute() {
   const part = location.pathname.split("/").filter(Boolean).pop();
@@ -396,7 +401,7 @@ $("finish").onclick = () =>
         : "Episode complete. Review the failed checks, then start a new episode.",
       !obs.result.passed,
     );
-    $("result").scrollIntoView({ behavior: "smooth", block: "center" });
+    $("result").scrollIntoView({ behavior: scrollBehavior(), block: "center" });
   });
 $("export").onclick = () =>
   run(async () => {
