@@ -7,6 +7,7 @@ export default `<!doctype html>
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <title>ChartAuth.ai</title>
+<link rel="apple-touch-icon" href="/assets/ChartAuth_Avatar.png">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="experience.css">
 <meta property="og:type" content="website">

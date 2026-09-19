@@ -97,5 +97,13 @@
     "transformation": "Removed optional EXIF, XMP, ICC and resolution metadata. Pixel content unchanged.",
     "source_sha256": "5942535358315a474f6bfcb32bd0be4d3bbd00fad64867fe56e96db0f1ca8c2e",
     "deployed_sha256": "42a3d9057d09749c9b656e41a6e073bddcd7e9689c898028368f799cee00ed3c"
+  },
+  {
+    "file": "ChartAuth_Avatar.png",
+    "acquisition": "Original ChartAuth project logo, copied from the prepared avatar asset.",
+    "dimensions": "1024 x 1024",
+    "transformation": "None. Byte-identical copy of the prepared PNG for mobile touch icons.",
+    "source_sha256": "e054856eb370c6ad705f507dbf5f511b19a91601fdd25b9669048c296102742a",
+    "deployed_sha256": "e054856eb370c6ad705f507dbf5f511b19a91601fdd25b9669048c296102742a"
   }
 ]

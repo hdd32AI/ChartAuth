@@ -5,6 +5,7 @@ export default `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ChartAuth.ai</title>
+<link rel="apple-touch-icon" href="/assets/ChartAuth_Avatar.png">
 <link rel="stylesheet" href="paper.css">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChartAuth.ai">
