@@ -117,6 +117,8 @@ const server = http.createServer(async (req, res) => {
       "/sources.css": "sources.css",
       "/access.css": "access.css",
       "/access.js": "access.js",
+      "/mobile.css": "mobile.css",
+      "/mobile.js": "mobile.js",
     };
     if (/^\/assets\/[A-Za-z0-9_.-]+$/.test(pathname))
       allowed[pathname] = pathname.slice(1);
@@ -124,7 +126,7 @@ const server = http.createServer(async (req, res) => {
       return send({ error: "Not found" }, 404);
     let content = await fs.readFile(path.join(root, allowed[pathname]));
     if (pathname === "/config.js")
-      content = Buffer.from("window.LAB_API = '/api';");
+      content = Buffer.concat([content, Buffer.from("\nwindow.LAB_API = '/api';\n")]);
     res.writeHead(200, {
       "Content-Type":
         pathname.endsWith(".js") || pathname.endsWith(".mjs")

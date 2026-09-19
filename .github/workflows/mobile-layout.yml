@@ -1,0 +1,33 @@
+name: Mobile layout
+on:
+  push:
+    branches: [main, 'mobile/**']
+    paths: ['web/**', 'server/**', 'tests/mobile-layout.mjs', '.github/workflows/mobile-layout.yml']
+  pull_request:
+    paths: ['web/**', 'server/**', 'tests/mobile-layout.mjs', '.github/workflows/mobile-layout.yml']
+permissions:
+  contents: read
+jobs:
+  mobile-layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install browser test runner
+        run: npm install --no-save --package-lock=false playwright@1.55.0
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Verify layouts and navigation
+        run: |
+          node server/local.mjs > /tmp/chartauth-server.log 2>&1 &
+          node tests/mobile-layout.mjs
+      - name: Save screenshots and layout report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-layout-review
+          path: mobile-qa/
+          retention-days: 7

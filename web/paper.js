@@ -34,3 +34,23 @@ const io = new IntersectionObserver(
   { rootMargin: "-15% 0px -70% 0px" },
 );
 chapters.forEach((c) => io.observe(c));
+
+(() => {
+  const base = new URL("./", document.currentScript?.src || document.baseURI);
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport && !viewport.content.includes("viewport-fit")) viewport.content += ", viewport-fit=cover";
+  if (!document.getElementById("ca-mobile-style")) {
+    const css = document.createElement("link");
+    css.id = "ca-mobile-style";
+    css.rel = "stylesheet";
+    css.href = new URL("mobile.css?v=20260919m1", base).href;
+    document.head.append(css);
+  }
+  if (!document.getElementById("ca-mobile-script")) {
+    const js = document.createElement("script");
+    js.id = "ca-mobile-script";
+    js.src = new URL("mobile.js?v=20260919m1", base).href;
+    js.defer = true;
+    document.head.append(js);
+  }
+})();
