@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>ChartAuth responsive review</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #e9edf1; color: #172332; font: 14px/1.5 system-ui, sans-serif; }
+      .toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; padding: 14px 20px; border-bottom: 1px solid #ccd4dd; background: #fff; }
+      h1 { margin: 0 auto 0 0; align-self: center; font-size: 17px; }
+      label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; }
+      select, button { min-height: 42px; border: 1px solid #b7c2ce; border-radius: 5px; padding: 8px 12px; background: #fff; color: inherit; font: inherit; }
+      select { font-size: 16px; }
+      button { cursor: pointer; }
+      a { color: #244f9f; align-self: center; }
+      :focus-visible { outline: 3px solid #2858b2; outline-offset: 3px; }
+      .status { margin: 0; padding: 10px 20px 0; color: #46566a; font-size: 12px; }
+      .frame-wrap { width: 100%; overflow: auto; padding: 20px; }
+      iframe { display: block; width: 430px; height: 820px; max-width: none; margin: 0 auto; border: 0; background: #fff; box-shadow: 0 0 0 1px #bcc7d3, 0 8px 24px #1a2b3c16; }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <h1>ChartAuth responsive review</h1>
+      <label for="review-width">Viewport width
+        <select id="review-width">
+          <option value="360">360 px</option>
+          <option value="390">390 px</option>
+          <option value="430" selected>430 px</option>
+          <option value="1280">1280 px</option>
+        </select>
+      </label>
+      <label for="review-route">Starting route
+        <select id="review-route">
+          <option value="/">Experience</option>
+          <option value="/worklist">Workspace</option>
+          <option value="/research">Research</option>
+          <option value="/production">Production</option>
+          <option value="/impact">Impact</option>
+          <option value="/notes">Notes</option>
+        </select>
+      </label>
+      <button id="review-reload" type="button">Reload selected route</button>
+      <a id="review-open" href="https://www.chartauth.ai/" target="_blank" rel="noopener noreferrer">Open selected route ↗</a>
+    </header>
+    <p id="review-status" class="status" role="status" aria-live="polite">430 × 820 CSS pixels · / · Live production site; normal password access applies.</p>
+    <main class="frame-wrap" aria-label="Live site review area">
+      <iframe id="review-frame" src="https://www.chartauth.ai/" title="Live ChartAuth website at the selected viewport width" width="430" height="820"></iframe>
+    </main>
+    <script>
+      const site = "https://www.chartauth.ai";
+      const widths = new Set(["360", "390", "430", "1280"]);
+      const routes = new Set(["/", "/worklist", "/research", "/production", "/impact", "/notes"]);
+      const widthControl = document.getElementById("review-width");
+      const routeControl = document.getElementById("review-route");
+      const frame = document.getElementById("review-frame");
+      const openLink = document.getElementById("review-open");
+      const status = document.getElementById("review-status");
+      function updateStatus() {
+        status.textContent = `${widthControl.value} × 820 CSS pixels · ${routeControl.value} · Live production site; normal password access applies.`;
+      }
+      widthControl.addEventListener("change", () => {
+        if (!widths.has(widthControl.value)) return;
+        frame.style.width = widthControl.value + "px";
+        frame.width = widthControl.value;
+        updateStatus();
+      });
+      function openRoute() {
+        if (!routes.has(routeControl.value)) return;
+        const destination = site + routeControl.value;
+        frame.src = destination;
+        openLink.href = destination;
+        updateStatus();
+      }
+      routeControl.addEventListener("change", openRoute);
+      document.getElementById("review-reload").addEventListener("click", openRoute);
+    </script>
+  </body>
+</html>
