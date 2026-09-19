@@ -1,0 +1,301 @@
+{
+  "case": "C",
+  "actions": [
+    {
+      "type": "query",
+      "request": {
+        "patient_id": "SYN-P1001",
+        "member_id": "SYN-M401",
+        "payer_id": "DEMO_HEALTH",
+        "provider_id": "SYN-PROVIDER-01",
+        "service_type": "physical_therapy",
+        "service_date": "2026-09-21",
+        "dob": "1984-05-14",
+        "last_name": "Ellis"
+      },
+      "idempotency_key": "example-inquiry"
+    },
+    {
+      "type": "poll"
+    },
+    {
+      "type": "assess",
+      "assessment": {
+        "fields": {
+          "patient_id": "SYN-P1001",
+          "member_id": "SYN-M401",
+          "payer_id": "DEMO_HEALTH",
+          "provider_id": "SYN-PROVIDER-01",
+          "service_type": "physical_therapy",
+          "service_date": "2026-09-21",
+          "coverage_status": "unknown",
+          "network_status": "unknown",
+          "copay": null,
+          "authorization_required": null,
+          "payment_guaranteed": false,
+          "disposition": "identity_review",
+          "next_owner": "registration",
+          "next_action": "resolve_member_identity"
+        },
+        "evidence": {
+          "patient": {
+            "id": "SYN-P1001",
+            "version": 1,
+            "digest": "d87a700e8de6f839f655da1f7a46ab120a88298a21163f42a5db81f7dfe0a95b"
+          },
+          "coverage": {
+            "id": "SYN-C401",
+            "version": 1,
+            "digest": "0ee199ec9ff0607c78d1157c465e8e600189e9372ef01e1b5cc1ea15a2ef30e5"
+          },
+          "visit": {
+            "id": "SYN-V501",
+            "version": 1,
+            "digest": "540957c2d746b55d225f3d63ecfed6f72fe3bb617b7562f27a04d61962286086"
+          },
+          "policy": {
+            "id": "ELIG_DEMO_V1",
+            "version": 1,
+            "digest": "6ee16d088f6f69184f9021cbbaac6bd239cb27e6e7fba3aeb7ffbc0d95285ac1"
+          },
+          "response": {
+            "id": "SYN-R601",
+            "version": 1,
+            "digest": "ab5fcba2d2740752313fb49c29e672a642e933dc5435934725924c1eff86cd64"
+          }
+        }
+      }
+    },
+    {
+      "type": "save",
+      "idempotency_key": "example-record"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "terminal": {
+    "version": "2.0.0",
+    "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+    "patient_id": "SYN-P1001",
+    "policy_version": "ELIG_DEMO_V1",
+    "started_at": 1789981200000,
+    "limits": {
+      "actions": 40,
+      "seconds": 600
+    },
+    "action_count": 5,
+    "status": "identity_review",
+    "source_documents": {
+      "patient": {
+        "id": "SYN-P1001",
+        "version": 1,
+        "first_name": "Jordan",
+        "last_name": "Ellis",
+        "dob": "1984-05-14",
+        "sex": "X",
+        "phone": "Not collected in this sample",
+        "synthetic": true,
+        "source_digest": "d87a700e8de6f839f655da1f7a46ab120a88298a21163f42a5db81f7dfe0a95b"
+      },
+      "coverage": {
+        "id": "SYN-C401",
+        "version": 1,
+        "patient_id": "SYN-P1001",
+        "member_id": "SYN-M401",
+        "payer_id": "DEMO_HEALTH",
+        "plan_name": "Demo Select PPO",
+        "subscriber_relationship": "self",
+        "card_received": "2026-09-18",
+        "verification_status": "unverified",
+        "source_digest": "0ee199ec9ff0607c78d1157c465e8e600189e9372ef01e1b5cc1ea15a2ef30e5"
+      },
+      "visit": {
+        "id": "SYN-V501",
+        "version": 1,
+        "patient_id": "SYN-P1001",
+        "provider_id": "SYN-PROVIDER-01",
+        "provider_name": "Demo Orthopedics",
+        "service_type": "physical_therapy",
+        "service_date": "2026-09-21",
+        "location": "Outpatient clinic",
+        "reason": "Left knee rehabilitation",
+        "status": "scheduled",
+        "source_digest": "540957c2d746b55d225f3d63ecfed6f72fe3bb617b7562f27a04d61962286086"
+      },
+      "policy": {
+        "id": "ELIG_DEMO_V1",
+        "version": 1,
+        "fictional": true,
+        "scope": "Eligibility and benefits review only",
+        "rules": [
+          "Match patient, member, payer, provider, service and date before using benefits.",
+          "A fresh payer response is required for this work item.",
+          "Record active or inactive coverage only when the response identity matches.",
+          "Unknown or mismatched identity requires a registration handoff.",
+          "Active coverage with authorization required routes to the authorization team.",
+          "Eligibility is not authorization or a guarantee of payment."
+        ],
+        "source_digest": "6ee16d088f6f69184f9021cbbaac6bd239cb27e6e7fba3aeb7ffbc0d95285ac1"
+      }
+    },
+    "inquiries": [
+      {
+        "inquiry_id": "INQ-01479e54-3dea-4c43-922a-26fd58f78087",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "fields": {
+          "patient_id": "SYN-P1001",
+          "member_id": "SYN-M401",
+          "payer_id": "DEMO_HEALTH",
+          "provider_id": "SYN-PROVIDER-01",
+          "service_type": "physical_therapy",
+          "service_date": "2026-09-21",
+          "dob": "1984-05-14",
+          "last_name": "Ellis"
+        },
+        "status": "received",
+        "created_at": 1789981201000
+      }
+    ],
+    "payer_response": {
+      "id": "SYN-R601",
+      "version": 1,
+      "patient_id": "SYN-P1001",
+      "member_id": "SYN-M999",
+      "payer_id": "DEMO_HEALTH",
+      "provider_id": "SYN-PROVIDER-01",
+      "service_type": "physical_therapy",
+      "service_date": "2026-09-21",
+      "lookup_status": "matched",
+      "coverage_status": "active",
+      "network_status": "in_network",
+      "copay": 30,
+      "currency": "USD",
+      "authorization_required": true,
+      "payment_guaranteed": false,
+      "benefit_note": "Fictional benefit terms for this service and date. Final payment depends on the claim and plan terms.",
+      "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+      "inquiry_id": "INQ-01479e54-3dea-4c43-922a-26fd58f78087",
+      "request_digest": "298f5e654ff4f2be149233ab5cbb44735d686cea624d5f06469761ff25a0e139",
+      "received_at": 1789981202000
+    },
+    "assessment": {
+      "fields": {
+        "patient_id": "SYN-P1001",
+        "member_id": "SYN-M401",
+        "payer_id": "DEMO_HEALTH",
+        "provider_id": "SYN-PROVIDER-01",
+        "service_type": "physical_therapy",
+        "service_date": "2026-09-21",
+        "coverage_status": "unknown",
+        "network_status": "unknown",
+        "copay": null,
+        "authorization_required": null,
+        "payment_guaranteed": false,
+        "disposition": "identity_review",
+        "next_owner": "registration",
+        "next_action": "resolve_member_identity"
+      },
+      "evidence": {
+        "patient": {
+          "id": "SYN-P1001",
+          "version": 1,
+          "digest": "d87a700e8de6f839f655da1f7a46ab120a88298a21163f42a5db81f7dfe0a95b"
+        },
+        "coverage": {
+          "id": "SYN-C401",
+          "version": 1,
+          "digest": "0ee199ec9ff0607c78d1157c465e8e600189e9372ef01e1b5cc1ea15a2ef30e5"
+        },
+        "visit": {
+          "id": "SYN-V501",
+          "version": 1,
+          "digest": "540957c2d746b55d225f3d63ecfed6f72fe3bb617b7562f27a04d61962286086"
+        },
+        "policy": {
+          "id": "ELIG_DEMO_V1",
+          "version": 1,
+          "digest": "6ee16d088f6f69184f9021cbbaac6bd239cb27e6e7fba3aeb7ffbc0d95285ac1"
+        },
+        "response": {
+          "id": "SYN-R601",
+          "version": 1,
+          "digest": "ab5fcba2d2740752313fb49c29e672a642e933dc5435934725924c1eff86cd64"
+        }
+      }
+    },
+    "records": [
+      {
+        "record_id": "ELG-c55efc1f-fea6-4b4c-b336-c727a62057b9",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "patient_id": "SYN-P1001",
+        "inquiry_id": "INQ-01479e54-3dea-4c43-922a-26fd58f78087",
+        "assessment_digest": "c73bc951815dbf918b1710a8a7f5de7ae852ae569ea20e8575abd86bdc997399",
+        "saved_at": 1789981204000
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "inquiry_created",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "at": 1789981201000,
+        "inquiry_id": "INQ-01479e54-3dea-4c43-922a-26fd58f78087"
+      },
+      {
+        "sequence": 2,
+        "type": "response_received",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "at": 1789981202000,
+        "inquiry_id": "INQ-01479e54-3dea-4c43-922a-26fd58f78087",
+        "response_id": "SYN-R601"
+      },
+      {
+        "sequence": 3,
+        "type": "assessment_drafted",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "at": 1789981203000
+      },
+      {
+        "sequence": 4,
+        "type": "record_saved",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "at": 1789981204000,
+        "record_id": "ELG-c55efc1f-fea6-4b4c-b336-c727a62057b9"
+      },
+      {
+        "sequence": 5,
+        "type": "episode_finished",
+        "episode_id": "d0af715c-8ac5-4299-a3b3-73a00e7bd840",
+        "at": 1789981205000
+      }
+    ],
+    "terminated": true,
+    "truncated": false,
+    "result": {
+      "status": "scored",
+      "reward": 1,
+      "passed": true,
+      "checks": {
+        "source_integrity": true,
+        "within_budget": true,
+        "finished": true,
+        "no_forbidden_actions": true,
+        "one_inquiry": true,
+        "inquiry_binding": true,
+        "payer_response_received": true,
+        "response_binding": true,
+        "response_integrity": true,
+        "assessment_fields": true,
+        "evidence_mapping": true,
+        "one_saved_record": true,
+        "record_binding": true,
+        "correct_disposition": true,
+        "event_history": true
+      },
+      "failed_checks": [],
+      "expected_disposition": "identity_review",
+      "verifier_version": "2.0.0"
+    }
+  }
+}

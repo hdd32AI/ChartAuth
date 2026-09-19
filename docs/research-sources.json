@@ -1,0 +1,94 @@
+{
+  "1": {
+    "title": "HealthAgentBench task 19 instructions",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/instruction.md"
+  },
+  "2": {
+    "title": "HealthAgentBench task 19 evaluator",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/tests/harbor_evaluator.py"
+  },
+  "3": {
+    "title": "HealthAgentBench container mounts",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/environment/docker-compose.yaml"
+  },
+  "4": {
+    "title": "HealthAgentBench task configuration",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/task.toml"
+  },
+  "5": {
+    "title": "HealthAgentBench bootstrap",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/environment/bootstrap.sh"
+  },
+  "6": {
+    "title": "MedAgentBench interaction implementation",
+    "url": "https://github.com/stanfordmlgroup/MedAgentBench/blob/99260117137b09f04837a8c18d18a1107efa55ae/src/server/tasks/medagentbench/__init__.py"
+  },
+  "7": {
+    "title": "HealthAdminBench research paper",
+    "url": "https://arxiv.org/abs/2604.09937"
+  },
+  "8": {
+    "title": "Flagler products and operating model",
+    "url": "https://www.flaglerhealth.io/"
+  },
+  "9": {
+    "title": "ModMed orthopedic EHR",
+    "url": "https://www.modmed.com/specialties/orthopedics/"
+  },
+  "10": {
+    "title": "HHS guidance on de identification",
+    "url": "https://www.hhs.gov/hipaa/for-professionals/special-topics/de-identification/index.html"
+  },
+  "11": {
+    "title": "Tau bench final state and repeated trial reliability",
+    "url": "https://arxiv.org/abs/2406.12045"
+  },
+  "12": {
+    "title": "HealthAdminBench repository and verification approach",
+    "url": "https://github.com/som-shahlab/health-admin-bench"
+  },
+  "13": {
+    "title": "MedAgentBench evaluator dispatch",
+    "url": "https://github.com/stanfordmlgroup/MedAgentBench/blob/99260117137b09f04837a8c18d18a1107efa55ae/src/server/tasks/medagentbench/eval.py"
+  },
+  "14": {
+    "title": "HealthAgentBench task 19 candidate pool",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/tests/pool_ncts.txt"
+  },
+  "15": {
+    "title": "HealthAgentBench task 19 eligible labels",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/tests/gold.txt"
+  },
+  "16": {
+    "title": "HealthAgentBench task image definition",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/environment/Dockerfile"
+  },
+  "17": {
+    "title": "HealthAgentBench trial staging and cache handling",
+    "url": "https://github.com/microsoft/HealthAgentBench/blob/bcbb8085fd549469e2dc7455f4bfd68a1b98895a/tasks/clinical_trial_matching_task_19/environment/fetch_trials.py"
+  },
+  "19": {
+    "title": "CMS eligibility inquiry and response",
+    "url": "https://www.cms.gov/priorities/key-initiatives/burden-reduction/administrative-simplification/transactions/health-plan-eligibility-benefit-inquiry-response"
+  },
+  "20": {
+    "title": "ModMed practice management and eligibility",
+    "url": "https://www.modmed.com/what-we-do/practice-management/"
+  },
+  "21": {
+    "title": "ModMed eligibility workflow demonstration",
+    "url": "https://www.modmed.com/resources/videos/derm-wow-insurance-eligibility-video"
+  },
+  "22": {
+    "title": "Alaska supervised healthcare case learning",
+    "url": "https://www.alaskalabs.ai/"
+  },
+  "23": {
+    "title": "DataSpring powered by CAQH 2025 Index overview",
+    "url": "https://www.dataspring.com/advisory-services/index-report"
+  },
+  "24": {
+    "title": "CMS explanation of value-based care",
+    "url": "https://www.cms.gov/priorities/innovation/key-concepts/value-based-care"
+  }
+}

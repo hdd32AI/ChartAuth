@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": "web",
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/notes",
+      "destination": "/paper.html"
+    },
+    {
+      "source": "/worklist",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/research",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/production",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/impact",
+      "destination": "/index.html"
+    }
+  ]
+}

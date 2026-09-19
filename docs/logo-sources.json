@@ -1,0 +1,101 @@
+[
+  {
+    "file": "openai.svg",
+    "url": "https://cdn.openai.com/brand/openai-logos.zip",
+    "source_page": "https://openai.com/brand/",
+    "archive_member": "OpenAI-logos/SVGs/OAI_OpenAI-Blossom_Black.svg",
+    "archive_sha256": "c54e85ab5884228f89f0230dd8effa8d588cad78166fe954135f4afa553222db",
+    "source_sha256": "75c1e9fffa5e8c437bec1d67197a73992bca45d166c6ff23215185dea8fae92a",
+    "deployed_sha256": "75c1e9fffa5e8c437bec1d67197a73992bca45d166c6ff23215185dea8fae92a"
+  },
+  {
+    "file": "claude.png",
+    "url": "https://platform.claude.com/favicon.svg",
+    "source_page": "https://platform.claude.com/docs/en/home",
+    "source_format": "SVG",
+    "deployment_format": "PNG",
+    "deployment_dimensions": "256 x 256",
+    "transformation": "Rendered from the official vector at 256 x 256 pixels. Artwork and colors unchanged.",
+    "source_sha256": "40fbb7453fc3601045a3fead0aa676f18c058ed0f6007d4e2e8d8c0ac838f1f4",
+    "deployed_sha256": "98857fef40a7db2c530a492a0f83ceb9671d13483088b37763d00fdb7ae8af13"
+  },
+  {
+    "file": "gemini.svg",
+    "url": "https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg",
+    "source_page": "https://gemini.google.com/",
+    "source_sha256": "f56df33f86dc0c0257da337c63bf7ad68c0a1b27b796ec707e147984351bccb3",
+    "deployed_sha256": "f56df33f86dc0c0257da337c63bf7ad68c0a1b27b796ec707e147984351bccb3"
+  },
+  {
+    "file": "github.svg",
+    "archive_member": "GitHub Logos/SVG/GitHub_Invertocat_Black.svg",
+    "url": "https://brand.github.com/GitHub_Logos.zip",
+    "source_page": "https://brand.github.com/foundations/logo",
+    "archive_sha256": "e2a67d6cc51d990a52c46c1cf6bcab688db4830982174bca50e0be7a5c2f3194",
+    "source_sha256": "693d7abe6f899646cc2e96856723b45e95f71885a54910b2749f6decdf7e1ee1",
+    "deployed_sha256": "693d7abe6f899646cc2e96856723b45e95f71885a54910b2749f6decdf7e1ee1"
+  },
+  {
+    "file": "supabase.svg",
+    "archive_member": "brand-assets/supabase-logo-icon.svg",
+    "url": "https://supabase.com/brand-assets.zip",
+    "source_page": "https://supabase.com/brand-assets",
+    "archive_sha256": "236486ef00ccb35a33aa778dea45eebfc5214cfe3f912b71c244d412abe9dca3",
+    "source_sha256": "eb9ffcd100ad26228a578100ba7cbfc5b383e4995338d122abdc6a3b4d210ed3",
+    "deployed_sha256": "eb9ffcd100ad26228a578100ba7cbfc5b383e4995338d122abdc6a3b4d210ed3"
+  },
+  {
+    "file": "vercel.svg",
+    "url": "https://vercel.com/vc-ap-b3331f/_next/static/immutable/media/logo-vercel-light.1xgi91gcqswpt.svg",
+    "source_page": "https://vercel.com/geist/brands",
+    "source_sha256": "27622083391fe7729d41233aa75e24fa6f7ea25b37f43f6cb1b7917f0be0a2dc",
+    "deployed_sha256": "27622083391fe7729d41233aa75e24fa6f7ea25b37f43f6cb1b7917f0be0a2dc"
+  },
+  {
+    "file": "postgresql.png",
+    "url": "https://www.postgresql.org/media/img/about/press/elephant.png",
+    "source_page": "https://www.postgresql.org/about/press/presskit18/",
+    "source_sha256": "ff92fb5d12a7fa6b23c2eb403d2edf4fbc58ced802021e1f02c3583cb70957be",
+    "deployed_sha256": "ff92fb5d12a7fa6b23c2eb403d2edf4fbc58ced802021e1f02c3583cb70957be"
+  },
+  {
+    "file": "deno.svg",
+    "url": "https://deno.com/logos/icon-light.svg?__frsh_c=b186cdb2e493f7e80b1eba8291d943be8ef40530",
+    "source_page": "https://deno.com/brand",
+    "source_sha256": "3d9962b5476f976f520be4281cd50e8a410d6f0a5ff1fb27417cc8df244ed0ed",
+    "deployed_sha256": "3d9962b5476f976f520be4281cd50e8a410d6f0a5ff1fb27417cc8df244ed0ed"
+  },
+  {
+    "file": "nodejs.svg",
+    "url": "https://nodejs.org/static/logos/jsIconGreen.svg",
+    "source_page": "https://nodejs.org/en/about/branding",
+    "source_sha256": "3c88b1a2261132b11d242fe8831525be051450e1149c965d5a5f1ded63e9b50d",
+    "deployed_sha256": "3c88b1a2261132b11d242fe8831525be051450e1149c965d5a5f1ded63e9b50d"
+  },
+  {
+    "file": "python.svg",
+    "url": "https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg",
+    "source_page": "https://www.python.org/community/logos/",
+    "source_sha256": "baec8662a1461c2cacc326b54d2727cb2f1ce07ba02d00f5b826d035104f649f",
+    "deployed_sha256": "f5950babbf7553b35144e37ea4c8179f375aab1c134f9f9364cfcf7c8a6cf42a",
+    "transformation": "Removed optional authoring metadata and unused editor namespace declarations; visual artwork preserved."
+  },
+  {
+    "file": "flagler.png",
+    "source_page": "https://www.flaglerhealth.io/",
+    "acquisition": "Existing supplied logo crop. Official website listed for brand identification; this crop was not downloaded as a standalone asset.",
+    "dimensions": "450 x 118",
+    "transformation": "Removed optional EXIF, XMP, ICC and resolution metadata. Pixel content unchanged.",
+    "source_sha256": "f1526977a76623e49360288564499f3c619d7973572fd019874f4ca21f3f65d1",
+    "deployed_sha256": "11e3b3ce27eefa7408c9faaacd7b4479eae257ea4f54eb2ea67e29ce2a4a7686"
+  },
+  {
+    "file": "alaska.png",
+    "source_page": "https://www.alaskalabs.ai/",
+    "acquisition": "Existing supplied logo crop. Official website listed for brand identification; this crop was not downloaded as a standalone asset.",
+    "dimensions": "358 x 114",
+    "transformation": "Removed optional EXIF, XMP, ICC and resolution metadata. Pixel content unchanged.",
+    "source_sha256": "5942535358315a474f6bfcb32bd0be4d3bbd00fad64867fe56e96db0f1ca8c2e",
+    "deployed_sha256": "42a3d9057d09749c9b656e41a6e073bddcd7e9689c898028368f799cee00ed3c"
+  }
+]

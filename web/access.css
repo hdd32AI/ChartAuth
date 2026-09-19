@@ -1,0 +1,348 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700&display=swap");
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f9faf5;
+  color: #12261b;
+  font-family: Manrope, Arial, sans-serif;
+}
+.access-shell {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+}
+.access-art {
+  background: #0b1720;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px;
+  color: #eff7ef;
+}
+.access-brand {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+}
+.access-mark {
+  width: 45px;
+  height: 45px;
+}
+.access-wordmark {
+  font:
+    27px Lora,
+    Georgia,
+    serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.access-wordmark small {
+  font:
+    9px Manrope,
+    Arial,
+    sans-serif;
+  letter-spacing: 0.45em;
+  color: #a8cadb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.access-wordmark small:before,
+.access-wordmark small:after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 30px;
+  background: #486570;
+}
+.access-art h1 {
+  font:
+    clamp(38px, 4.3vw, 61px)/1.15 Lora,
+    Georgia,
+    serif;
+  letter-spacing: -1.6px;
+  position: relative;
+  z-index: 1;
+  margin: 40px 0;
+}
+.access-art h1 em {
+  font-weight: 400;
+  color: #b9d7e7;
+}
+.access-orbit {
+  position: absolute;
+  inset: 17% -40% 0 4%;
+  transform: rotate(-27deg);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.access-orbit i {
+  position: absolute;
+  border: 1px solid #80a9be;
+  border-radius: 50%;
+  width: 80%;
+  height: 80%;
+  animation: breathe 9s ease-in-out infinite;
+}
+.access-orbit i:nth-child(2) {
+  width: 68%;
+  height: 68%;
+  left: 6%;
+  top: 6%;
+  animation-delay: 1s;
+}
+.access-orbit i:nth-child(3) {
+  width: 56%;
+  height: 56%;
+  left: 12%;
+  top: 12%;
+  animation-delay: 2s;
+}
+.access-art-bottom {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #9db9c7;
+  position: relative;
+  z-index: 1;
+}
+.access-art-footer {
+  position: relative;
+  z-index: 1;
+}
+.access-company-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+.access-company-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid rgba(198, 212, 222, 0.12);
+  border-radius: 4px;
+  opacity: 0.88;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.access-company-flagler {
+  background: #fffdfb;
+}
+.access-company-alaska {
+  background: #0b0e13;
+}
+.access-company-links a:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+.access-company-links a:focus-visible {
+  outline: 2px solid #b9d7e7;
+  outline-offset: 5px;
+  opacity: 1;
+}
+.access-company-links img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.access-company-times {
+  color: #8ea7b5;
+  font-size: 13px;
+  font-weight: 400;
+}
+.access-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 55px;
+}
+.access-content {
+  max-width: 390px;
+  width: 100%;
+}
+.access-kicker {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #688271;
+}
+.access-content h2 {
+  font:
+    44px/1.15 Lora,
+    Georgia,
+    serif;
+  font-weight: 400;
+  margin: 22px 0;
+}
+.access-content > p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #687b6d;
+  margin-bottom: 36px;
+}
+.access-content label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.access-password-wrap {
+  display: flex;
+  border-bottom: 1px solid #8ba18e;
+  margin: 10px 0 28px;
+  align-items: center;
+}
+.access-password-wrap input {
+  background: transparent;
+  border: 0;
+  min-width: 0;
+  width: 100%;
+  padding: 15px 0;
+  font:
+    17px Manrope,
+    Arial,
+    sans-serif;
+  color: #173023;
+  outline-offset: 3px;
+}
+.access-password-wrap button {
+  border: 0;
+  background: none;
+  color: #5b7462;
+  cursor: pointer;
+  padding: 15px 0 15px 15px;
+  font:
+    12px Manrope,
+    Arial,
+    sans-serif;
+}
+#access-submit {
+  width: 100%;
+  border: 0;
+  padding: 17px 23px;
+  background: #2855aa;
+  color: white;
+  font:
+    14px Manrope,
+    Arial,
+    sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    transform 0.25s;
+}
+#access-submit:hover {
+  background: #1d438d;
+  transform: translateY(-2px);
+}
+#access-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+#access-error {
+  color: #a14932;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 20px;
+  margin-top: 16px;
+}
+.access-caption {
+  border-top: 1px solid #d8e1d5;
+  margin-top: 36px;
+  padding-top: 22px;
+  font-size: 11px;
+  color: #7a8d7e;
+  line-height: 1.8;
+}
+.access-caption b {
+  color: #526c5a;
+  font-weight: 500;
+}
+.access-content a {
+  color: #2855aa;
+}
+.access-return {
+  font-size: 11px;
+  color: #789081;
+  margin-top: 28px;
+}
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+@media (max-width: 760px) {
+  .access-shell {
+    grid-template-columns: 1fr;
+  }
+  .access-art {
+    padding: 28px;
+    min-height: 290px;
+  }
+  .access-wordmark {
+    font-size: 23px;
+  }
+  .access-mark {
+    width: 37px;
+    height: 37px;
+  }
+  .access-art h1 {
+    font-size: 35px;
+    letter-spacing: -0.5px;
+    margin: 30px 0 20px;
+  }
+  .access-art-bottom {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+  .access-company-links {
+    margin-top: 15px;
+    gap: 10px;
+  }
+  .access-company-links a {
+    width: 104px;
+  }
+  .access-form-side {
+    padding: 38px 28px 48px;
+    align-items: flex-start;
+  }
+  .access-content {
+    max-width: 470px;
+  }
+  .access-content h2 {
+    font-size: 35px;
+    margin: 15px 0;
+  }
+  .access-content > p {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .access-caption {
+    margin-top: 22px;
+  }
+  .access-orbit {
+    inset: 0 -20% -60% 15%;
+  }
+}

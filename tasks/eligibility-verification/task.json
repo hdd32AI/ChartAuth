@@ -1,0 +1,344 @@
+{
+  "task_id": "eligibility-verification",
+  "name": "ChartAuth eligibility verification",
+  "version": "2.0.0",
+  "contract": "ChartAuth native task manifest",
+  "objective": "Save one source-supported eligibility result for the specified patient and visit, with the correct next owner and action, then finish the episode.",
+  "scope": {
+    "records": "fictional",
+    "live_ehr": false,
+    "live_payer": false,
+    "clinical_decision": false,
+    "payment_guarantee": false,
+    "third_party_harness_compatibility_claim": false
+  },
+  "implementation": {
+    "environment": "core/environment.mjs",
+    "fixtures": "core/fixtures.mjs",
+    "specification": "SPEC.md",
+    "tests": [
+      "tests/environment.test.mjs",
+      "tests/inventory.test.mjs",
+      "tests/scenarios.test.mjs"
+    ]
+  },
+  "entrypoints": {
+    "reset": "reset(case_key, now?)",
+    "observation": "observe(state)",
+    "transition": "step(state, action, now?)",
+    "terminal_verifier": "score(state, now?)"
+  },
+  "initialization": {
+    "default_case": "A",
+    "initial_status": "ready",
+    "inquiries": 0,
+    "saved_records": 0,
+    "payer_response": null,
+    "assessment": null,
+    "terminated": false,
+    "truncated": false,
+    "independent_episode_id": true
+  },
+  "observation": {
+    "fields": [
+      "version",
+      "episode_id",
+      "patient_id",
+      "policy_version",
+      "started_at",
+      "limits",
+      "action_count",
+      "status",
+      "source_documents",
+      "inquiries",
+      "payer_response",
+      "assessment",
+      "records",
+      "events",
+      "terminated",
+      "truncated",
+      "result"
+    ],
+    "source_roles": ["patient", "coverage", "visit", "policy"],
+    "document_digest_field": "source_digest",
+    "payer_response_released_after": ["query", "poll"],
+    "result_released_when": "terminated",
+    "excluded_state_fields": ["reference", "idempotency"],
+    "public_source_contains_references": true
+  },
+  "actions": [
+    {
+      "type": "inspect",
+      "required_fields": ["type", "role"],
+      "additional_fields": false,
+      "role_enum": ["patient", "coverage", "visit", "policy"]
+    },
+    {
+      "type": "query",
+      "required_fields": ["type", "request", "idempotency_key"],
+      "additional_fields": false
+    },
+    {
+      "type": "poll",
+      "required_fields": ["type"],
+      "additional_fields": false
+    },
+    {
+      "type": "assess",
+      "required_fields": ["type", "assessment"],
+      "additional_fields": false
+    },
+    {
+      "type": "save",
+      "required_fields": ["type", "idempotency_key"],
+      "additional_fields": false
+    },
+    {
+      "type": "finish",
+      "required_fields": ["type"],
+      "additional_fields": false
+    }
+  ],
+  "inquiry": {
+    "fields": [
+      "patient_id",
+      "member_id",
+      "payer_id",
+      "provider_id",
+      "service_type",
+      "service_date",
+      "dob",
+      "last_name"
+    ],
+    "additional_fields": false,
+    "value_type": "string",
+    "min_length": 1,
+    "max_length": 100
+  },
+  "assessment": {
+    "required_outer_fields": ["fields", "evidence"],
+    "additional_outer_fields": false,
+    "required_output_fields": [
+      "patient_id",
+      "member_id",
+      "payer_id",
+      "provider_id",
+      "service_type",
+      "service_date",
+      "coverage_status",
+      "network_status",
+      "copay",
+      "authorization_required",
+      "payment_guaranteed",
+      "disposition",
+      "next_owner",
+      "next_action"
+    ],
+    "reference_value_enums": {
+      "coverage_status": ["active", "inactive", "unknown"],
+      "network_status": ["in_network", "unknown", "out_of_network"],
+      "authorization_required": [true, null, false],
+      "payment_guaranteed": [false],
+      "disposition": [
+        "verified",
+        "coverage_issue",
+        "identity_review",
+        "benefit_review",
+        "response_review"
+      ],
+      "next_owner": [
+        "authorization_team",
+        "registration",
+        "scheduling",
+        "benefits_team"
+      ],
+      "next_action": [
+        "start_prior_authorization",
+        "request_updated_coverage",
+        "resolve_member_identity",
+        "confirm_visit_readiness",
+        "review_network_options",
+        "clarify_authorization",
+        "request_cost_share",
+        "request_corrected_response",
+        "clarify_coverage"
+      ]
+    },
+    "validation": "Outer shape is checked when staged; exact fields, values and evidence are checked at finish."
+  },
+  "evidence": {
+    "roles": ["patient", "coverage", "visit", "policy", "response"],
+    "reference_fields": ["id", "version", "digest"],
+    "digest": "SHA-256",
+    "canonicalization": "Recursively sort object keys; retain array order; JSON encode.",
+    "observation_source_digest_excluded_from_document_hash": true,
+    "field_level_text_spans": false
+  },
+  "limits": {
+    "max_actions": 40,
+    "max_seconds": 600,
+    "time_checked_on_action": true,
+    "finish_may_be_action_40": true,
+    "nonterminal_action_40_truncates": true,
+    "finish_at_exact_time_limit_allowed": true
+  },
+  "idempotency": {
+    "actions": ["query", "save"],
+    "key_pattern": "^[A-Za-z0-9_-]{8,80}$",
+    "same_key_same_content": "Replay the original output without another counted action.",
+    "same_key_changed_content": "Reject with 409.",
+    "new_key_duplicate_transaction": "Reject with 409.",
+    "after_termination": "Reject with 409."
+  },
+  "termination": {
+    "requested_by": "finish",
+    "automatic_on": [
+      "action budget exhausted without finish",
+      "time budget exceeded when an action is attempted"
+    ],
+    "terminated_flag": "terminated",
+    "truncated_flag": "truncated",
+    "post_terminal_actions_rejected": true
+  },
+  "reward": {
+    "timing": "terminal",
+    "values": [0, 1],
+    "success": "All 15 terminal checks pass.",
+    "failure": "At least one terminal check fails.",
+    "partial_credit": false,
+    "checks": [
+      "source_integrity",
+      "within_budget",
+      "finished",
+      "no_forbidden_actions",
+      "one_inquiry",
+      "inquiry_binding",
+      "payer_response_received",
+      "response_binding",
+      "response_integrity",
+      "assessment_fields",
+      "evidence_mapping",
+      "one_saved_record",
+      "record_binding",
+      "correct_disposition",
+      "event_history"
+    ],
+    "narrative_model_judge": false,
+    "hosted_infrastructure_error_reward": null
+  },
+  "reference_cases": [
+    {
+      "id": "A",
+      "policy": "ELIG_DEMO_V1",
+      "episode_file": "examples/case-A.json",
+      "coverage_status": "active",
+      "disposition": "verified",
+      "next_owner": "authorization_team",
+      "next_action": "start_prior_authorization"
+    },
+    {
+      "id": "B",
+      "policy": "ELIG_DEMO_V1",
+      "episode_file": "examples/case-B.json",
+      "coverage_status": "inactive",
+      "disposition": "coverage_issue",
+      "next_owner": "registration",
+      "next_action": "request_updated_coverage"
+    },
+    {
+      "id": "C",
+      "policy": "ELIG_DEMO_V1",
+      "episode_file": "examples/case-C.json",
+      "coverage_status": "unknown",
+      "disposition": "identity_review",
+      "next_owner": "registration",
+      "next_action": "resolve_member_identity"
+    }
+  ],
+  "inventory": {
+    "worklist_visits": 1000,
+    "reference_episodes": 3,
+    "total_resettable_cases": 1003,
+    "scenario_templates": 50,
+    "operating_conditions": [
+      "authorization_required",
+      "authorization_not_required",
+      "out_of_network",
+      "authorization_unknown",
+      "cost_share_missing",
+      "coverage_inactive",
+      "member_mismatch",
+      "service_date_mismatch",
+      "payer_mismatch",
+      "coverage_unknown"
+    ],
+    "service_types": [
+      "physical_therapy",
+      "occupational_therapy",
+      "office_visit",
+      "specialist_consultation",
+      "diagnostic_lab"
+    ],
+    "visits_per_template": 20,
+    "template_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S16",
+      "S17",
+      "S18",
+      "S19",
+      "S20",
+      "S21",
+      "S22",
+      "S23",
+      "S24",
+      "S25",
+      "S26",
+      "S27",
+      "S28",
+      "S29",
+      "S30",
+      "S31",
+      "S32",
+      "S33",
+      "S34",
+      "S35",
+      "S36",
+      "S37",
+      "S38",
+      "S39",
+      "S40",
+      "S41",
+      "S42",
+      "S43",
+      "S44",
+      "S45",
+      "S46",
+      "S47",
+      "S48",
+      "S49",
+      "S50"
+    ],
+    "worklist_case_keys": {
+      "first": "CW0001",
+      "last": "CW1000"
+    },
+    "worklist_policy": "ELIG_DEMO_V2",
+    "template_layout": "Ten operating conditions crossed with five service types; service type varies fastest.",
+    "private_evaluation_split": false,
+    "specialist_validation_completed": false
+  }
+}

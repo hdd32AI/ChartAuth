@@ -1,0 +1,4 @@
+window.LAB_API =
+  "https://bkvwjkkonvkykaymjrwb.supabase.co/functions/v1/chartauth-api";
+window.LAB_PUBLIC_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrdndqa2tvbnZreWtheW1qcndiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzNzY4MzMsImV4cCI6MjEwMzk1MjgzM30.ZXa8vMlh1K6JFU4C48rLPT4k9A72-HIX5pdjvqqSLOk";

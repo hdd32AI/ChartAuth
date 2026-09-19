@@ -1,0 +1,73 @@
+{
+  "reviewed": "2026-09-19",
+  "models": [
+    {
+      "name": "GPT-6 Astra",
+      "context": "Ultra workspace",
+      "role": "Development",
+      "href": "https://openai.com/",
+      "asset": "openai.svg"
+    },
+    {
+      "name": "Claude Fable 5.1",
+      "context": "Anthropic",
+      "role": "Model reference",
+      "href": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+      "asset": "claude.png"
+    },
+    {
+      "name": "Gemini 3.1 Deep Think",
+      "context": "Google DeepMind",
+      "role": "Model reference",
+      "href": "https://deepmind.google/models/gemini/deep-think/",
+      "asset": "gemini.svg"
+    }
+  ],
+  "stack": [
+    {
+      "name": "GitHub",
+      "role": "Source & version control",
+      "url": "https://github.com/",
+      "asset": "github.svg"
+    },
+    {
+      "name": "Vercel",
+      "role": "Web hosting",
+      "url": "https://vercel.com/",
+      "asset": "vercel.svg"
+    },
+    {
+      "name": "Supabase",
+      "role": "Hosted API & sessions",
+      "url": "https://supabase.com/",
+      "asset": "supabase.svg"
+    },
+    {
+      "name": "PostgreSQL",
+      "role": "Data & access policies",
+      "url": "https://www.postgresql.org/",
+      "asset": "postgresql.png"
+    },
+    {
+      "name": "Deno",
+      "role": "Edge runtime",
+      "url": "https://deno.com/",
+      "asset": "deno.svg"
+    },
+    {
+      "name": "Node.js",
+      "role": "Local runtime & tests",
+      "url": "https://nodejs.org/",
+      "asset": "nodejs.svg"
+    },
+    {
+      "name": "Python",
+      "role": "Benchmark reproduction",
+      "url": "https://www.python.org/",
+      "asset": "python.svg"
+    }
+  ],
+  "narration": "Browser Web Speech API",
+  "feedback_transcription": "Provider and model not recorded; no provider claim.",
+  "runtime_inference": "No model API calls in the demonstration."
+}
