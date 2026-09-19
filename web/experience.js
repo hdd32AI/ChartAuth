@@ -1,5 +1,10 @@
 import { suggestAssessment } from "./suggestions.js";
 const $ = (id) => document.getElementById(id);
+const scrollBehavior = () =>
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth";
 const captions = [
   "Start with the patient chart, insurance card and the service scheduled for this visit.",
   "Send one inquiry tied to the patient, member, provider and service date.",
@@ -507,7 +512,7 @@ document.querySelectorAll("[data-chapter]").forEach(
     }),
 );
 $("watch-demo").onclick = () => {
-  $("walkthrough").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("walkthrough").scrollIntoView({ behavior: scrollBehavior(), block: "start" });
   play();
 };
 $("demo-narrate").onclick = () => {
@@ -570,6 +575,28 @@ function compare(k) {
 document
   .querySelectorAll("[data-compare]")
   .forEach((b) => (b.onclick = () => compare(b.dataset.compare)));
+for (const selector of ["[data-chapter]", "[data-compare]", "[data-chart]"]) {
+  const tabs = Array.from(document.querySelectorAll(selector));
+  for (const tab of tabs) {
+    tab.addEventListener("keydown", (event) => {
+      if (
+        event.altKey || event.ctrlKey || event.metaKey ||
+        !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)
+      ) return;
+      const available = tabs.filter((button) => !button.disabled);
+      const current = available.indexOf(tab);
+      if (current < 0) return;
+      const next = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? available.length - 1
+          : (current + (event.key === "ArrowRight" ? 1 : -1) + available.length) % available.length;
+      event.preventDefault();
+      available[next].focus();
+      available[next].click();
+    });
+  }
+}
 compare("A");
 show(0);
 document
