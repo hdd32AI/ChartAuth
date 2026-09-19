@@ -1,0 +1,35 @@
+name: Mobile UI verification
+on:
+  push:
+    branches: [ui/mobile-centered-navigation]
+  pull_request:
+    paths: ['web/**', 'server/**', 'tests/mobile-browser.mjs', '.github/workflows/mobile-ui.yml']
+permissions:
+  contents: read
+jobs:
+  mobile-browser-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser-test dependency
+        run: npm install --no-save --package-lock=false playwright@1.55.0
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Verify existing environment tests
+        run: npm test
+      - name: Verify phone layouts and interactions
+        run: node tests/mobile-browser.mjs
+      - name: Upload screenshots and audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chartauth-mobile-ui
+          path: artifacts/mobile-ui/
+          retention-days: 7
+      - name: Publish verification summary
+        if: always()
+        run: cat artifacts/mobile-ui/SUMMARY.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
