@@ -1,7 +1,7 @@
 name: Mobile UI verification
 on:
   push:
-    branches: [ui/mobile-centered-navigation]
+    branches: [main, ui/mobile-centered-navigation]
   pull_request:
     paths: ['web/**', 'server/**', 'tests/mobile-browser.mjs', '.github/workflows/mobile-ui.yml']
 permissions:

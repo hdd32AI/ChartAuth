@@ -5,8 +5,8 @@
   padding: 56px 25px 64px;
   border-top: 1px solid #cbd5ce;
   scroll-margin-top: 100px;
-  color: #19392b;
-  font-family: Manrope, Arial, sans-serif;
+  color: #18251f;
+  font-family: Arimo, Arial, sans-serif;
 }
 .source-heading {
   display: flex;
@@ -58,7 +58,7 @@
   align-items: center;
   column-gap: 14px;
   padding: 24px 18px 22px;
-  color: #19392b;
+  color: #18251f;
   transition: background 0.18s ease;
   text-decoration: none !important;
 }

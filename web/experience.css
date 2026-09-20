@@ -1,20 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Arimo:wght@400;500;600;700&display=swap");
 :root {
-  --ink: #101c18;
+  --ink: #18251f;
   --muted: #65706a;
-  --blue: #2858b2;
-  --teal: #2858b2;
-  --paper: #fffdfa;
+  --blue: #2855aa;
+  --teal: #2855aa;
+  --paper: #fffdf8;
   --line: #dedfd8;
   --navy: #0b1119;
 }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: Manrope, Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
 }
 .topbar {
-  background: rgba(255, 253, 250, 0.94);
+  background: rgba(255, 253, 248, 0.94);
   border-bottom: 1px solid #e6e7e0;
   height: 82px;
   backdrop-filter: blur(18px);
@@ -31,7 +31,7 @@ body {
 .chartauth-mark {
   font-family: Arial;
   font-size: 35px;
-  color: #2858b2;
+  color: #2855aa;
 }
 .brandmark {
   display: none;
@@ -124,8 +124,8 @@ main {
   margin: 0;
 }
 .primary {
-  background: #2858b2;
-  border-color: #2858b2;
+  background: #2855aa;
+  border-color: #2855aa;
   border-radius: 3px;
   padding: 15px 23px;
   box-shadow: none;
@@ -139,7 +139,7 @@ main {
 }
 .textbutton {
   font-size: 13px;
-  color: #2858b2;
+  color: #2855aa;
 }
 .primary span,
 .textbutton span {
@@ -216,7 +216,7 @@ main {
   font-size: 18px;
 }
 .demo-wordmark > span {
-  font-family: Manrope;
+  font-family: Arimo, Arial, sans-serif;
   font-size: 10px;
   color: #88968e;
   margin-left: 13px;
@@ -274,9 +274,9 @@ main {
   padding: 7px 9px;
 }
 .demo-sidebar-nav .selected {
-  color: #2858b2;
+  color: #2855aa;
   background: #e6edf8;
-  border-left: 2px solid #2858b2;
+  border-left: 2px solid #2855aa;
 }
 .demo-visit {
   display: flex;
@@ -355,7 +355,7 @@ main {
 .scene-action {
   margin-top: 20px;
   font-size: 10px;
-  background: #2858b2;
+  background: #2855aa;
   color: #fff;
   padding: 10px 17px;
   display: inline-flex;
@@ -384,7 +384,7 @@ main {
 }
 .demo-cursor span {
   font-size: 8px;
-  background: #2858b2;
+  background: #2855aa;
   color: white;
   padding: 4px 7px;
   border-radius: 2px;
@@ -462,7 +462,7 @@ main {
   min-height: 64px;
 }
 .demo-caption > span {
-  color: #2858b2;
+  color: #2855aa;
   font-size: 15px;
   font-weight: 700;
 }
@@ -798,11 +798,11 @@ main {
   margin-left: auto;
   font-size: 11px;
   font-weight: 500;
-  color: #2858b2;
+  color: #2855aa;
 }
 .deliverable-rows > a:hover h3,
 .deliverable-rows > button:hover h3 {
-  color: #2858b2;
+  color: #2855aa;
 }
 .prepared-for {
   border-top: 1px solid #dfe4d8;
@@ -880,7 +880,7 @@ footer {
 .form-grid input,
 .form-grid select {
   border-radius: 3px;
-  background: #fffdfa;
+  background: #fffdf8;
 }
 .stagebar {
   border-radius: 0;
@@ -944,7 +944,7 @@ footer {
   min-width: 0;
   line-height: 1.35;
   font-variant-numeric: tabular-nums;
-  color: #2858b2;
+  color: #2855aa;
 }
 #production .vertical-flow article::before {
   content: none;
@@ -1550,7 +1550,7 @@ a:focus-visible {
   padding: 13px 15px;
   background: white;
   font:
-    14px Manrope,
+    14px Arimo,
     Arial,
     sans-serif;
   min-height: 46px;
@@ -1653,7 +1653,7 @@ a:focus-visible {
 footer a,
 footer button {
   font:
-    12px Manrope,
+    12px Arimo,
     Arial,
     sans-serif;
   color: #526257;
@@ -1735,7 +1735,7 @@ dialog::backdrop {
 }
 .brand-stack small {
   font:
-    9px Manrope,
+    9px Arimo,
     Arial,
     sans-serif;
   letter-spacing: 0.4em;
@@ -1968,7 +1968,7 @@ img.chartauth-mark {
   padding: 0 26px 20px;
   color: #72859a;
   font:
-    500 13px Manrope,
+    500 13px Arimo,
     sans-serif;
 }
 .tour-scenario-label select {
@@ -1979,7 +1979,7 @@ img.chartauth-mark {
   padding: 11px 16px;
   max-width: 100%;
   font:
-    500 14px Manrope,
+    500 14px Arimo,
     sans-serif;
 }
 .scenario-label {

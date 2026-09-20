@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap");
 :root {
   --ink: #152c40;
   --muted: #65798b;
@@ -19,7 +19,7 @@ body {
   background: #f7f9fb;
   color: var(--ink);
   font:
-    14px/1.55 "DM Sans",
+    14px/1.55 Arimo,
     Arial,
     sans-serif;
 }
@@ -63,7 +63,7 @@ p {
 h1,
 h2,
 h3 {
-  font-family: Manrope, "DM Sans", Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
   line-height: 1.25;
 }
 h1 {
@@ -103,7 +103,7 @@ a {
   display: flex;
   align-items: center;
   font:
-    800 25px Manrope,
+    800 25px Arimo,
     Arial;
   letter-spacing: -1px;
 }
@@ -176,7 +176,7 @@ a {
 }
 .eyebrow {
   font:
-    700 10px/1.5 "DM Sans",
+    700 10px/1.5 Arimo,
     sans-serif;
   letter-spacing: 1.5px;
   color: var(--teal);
@@ -252,7 +252,7 @@ a {
   flex-direction: column;
 }
 .hero-facts strong {
-  font: 700 29px Manrope;
+  font: 700 29px Arimo, Arial, sans-serif;
   color: var(--blue);
 }
 .hero-facts span {
@@ -295,7 +295,7 @@ a {
 .avatar {
   background: #dfece8;
   color: var(--teal);
-  font: 700 18px Manrope;
+  font: 700 18px Arimo, Arial, sans-serif;
   min-width: 50px;
   height: 50px;
   display: flex;
@@ -384,7 +384,7 @@ a {
   flex: 1;
 }
 .flow b {
-  font: 750 25px Manrope;
+  font: 750 25px Arimo, Arial, sans-serif;
   color: #93b3c2;
   display: block;
   margin-bottom: 10px;
@@ -556,7 +556,7 @@ input[type="checkbox"] {
   font-size: 23px;
 }
 .patient-banner h2 span {
-  font: 500 10px "DM Sans";
+  font: 500 10px Arimo, Arial, sans-serif;
   letter-spacing: 0;
   color: var(--muted);
   margin-left: 12px;
@@ -987,7 +987,7 @@ pre {
   border-top: 1px solid var(--line);
 }
 .result-head {
-  font: 700 18px Manrope;
+  font: 700 18px Arimo, Arial, sans-serif;
   color: var(--teal);
   margin-bottom: 7px;
 }
@@ -1046,7 +1046,7 @@ pre {
   display: block;
 }
 .metric-pair strong {
-  font: 750 48px Manrope;
+  font: 750 48px Arimo, Arial, sans-serif;
   color: var(--blue);
 }
 .quiet {
@@ -1133,7 +1133,7 @@ pre {
   padding-bottom: 35px;
 }
 .vertical-flow article b {
-  font: 750 24px Manrope;
+  font: 750 24px Arimo, Arial, sans-serif;
   color: #99b1c2;
   min-width: 42px;
 }
@@ -1203,7 +1203,7 @@ pre {
   padding: 20px 0 10px;
 }
 .cost-result strong {
-  font: 750 45px Manrope;
+  font: 750 45px Arimo, Arial, sans-serif;
   color: var(--blue);
   display: block;
 }

@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Arimo:wght@400;500;600;700&display=swap");
 :root {
-  --ink: #12231b;
+  --ink: #18251f;
   --blue: #2855aa;
   --paper: #fffdf8;
   --muted: #6b776e;
@@ -16,7 +16,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: Manrope, Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
 }
 a {
   color: var(--blue);
@@ -164,7 +164,7 @@ h1 em {
 }
 .reader-search input {
   font:
-    16px Manrope,
+    16px Arimo,
     Arial,
     sans-serif;
   padding: 15px;
@@ -339,7 +339,7 @@ footer {
 }
 .reader-brand small {
   font:
-    500 10px Manrope,
+    500 10px Arimo,
     Arial,
     sans-serif;
   letter-spacing: 5px;
@@ -350,16 +350,42 @@ footer {
   flex: none;
 }
 @media (max-width: 600px) {
+  .reader-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px 20px;
+  }
   .reader-brand > span {
     font-size: 18px;
   }
   .reader-brand {
     gap: 8px;
+    flex: none;
   }
   .reader-header nav {
-    gap: 11px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 4px 20px;
   }
   .reader-header nav a {
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  footer {
+    padding: 24px 20px;
+    gap: 8px 20px;
+  }
+  footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 13px;
+  }
+  footer span {
+    flex-basis: 100%;
   }
 }

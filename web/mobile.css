@@ -14,14 +14,14 @@
   button, input:not([type="checkbox"]):not([type="range"]), select { min-height: 44px; }
   input:not([type="checkbox"]), select, textarea { min-width: 0; max-width: 100%; font-size: 16px; }
   input[type="range"] { width: 100%; }
-  :focus-visible { outline: 2px solid #2858b2; outline-offset: 3px; }
+  :focus-visible { outline: 2px solid #2855aa; outline-offset: 3px; }
   .mobile-ready .mobile-header {
     position: sticky; top: 0; z-index: 90; width: 100%; max-width: none;
     display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px;
     grid-template-rows: 62px 50px; align-items: center; gap: 0;
     height: auto; min-height: 0; margin: 0;
     padding: env(safe-area-inset-top, 0px) max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
-    background: #fffdfa; border-bottom: 1px solid #dce2e6;
+    background: #fffdf8; border-bottom: 1px solid #dce2e6;
     transition: box-shadow .18s ease;
   }
   .mobile-ready .mobile-has-scrolled { box-shadow: 0 5px 20px #1021370a; }
@@ -41,21 +41,21 @@
     width: auto; height: auto; padding: 8px; margin: 0; gap: 4px;
     max-height: calc(100vh - var(--mobile-header-height, 113px) - 24px);
     max-height: calc(100dvh - var(--mobile-header-height, 113px) - 24px);
-    overflow-y: auto; overscroll-behavior: contain; border: 1px solid #dce3eb; border-radius: 14px; background: #fffdfa; box-shadow: 0 16px 48px #10213724;
+    overflow-y: auto; overscroll-behavior: contain; border: 1px solid #dce3eb; border-radius: 14px; background: #fffdf8; box-shadow: 0 16px 48px #10213724;
   }
   .mobile-header.mobile-menu-open > .mobile-main-menu:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mobile-main-menu > a, .mobile-main-menu > button {
+  .mobile-ready .mobile-header > .mobile-main-menu > a, .mobile-ready .mobile-header > .mobile-main-menu > button {
     display: flex; align-items: center; justify-content: flex-start; min-width: 0; min-height: 48px; height: auto; padding: 12px;
     font-family: inherit; font-weight: 600; font-size: 13px; line-height: 1.4; white-space: normal; text-align: left; text-decoration: none;
     border: 0; border-radius: 8px; color: #405365; background: transparent;
   }
-  .mobile-main-menu > .active { background: #eaf0fa; color: #2858b2; }
+  .mobile-main-menu > .active { background: #eaf0fa; color: #2855aa; }
   .mobile-header > .mobile-progress { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: repeat(var(--section-count, 6), minmax(0, 1fr)); align-items: stretch; width: 100%; height: 50px; padding: 0; margin: 0; gap: 0; border-top: 1px solid #e8ebed; }
   .mobile-progress-step { min-width: 0; min-height: 48px; width: 100%; padding: 7px 0 5px; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 5px; background: transparent; color: #657586; font-family: inherit; font-weight: 500; font-size: 10px; line-height: 1.2; cursor: pointer; }
-  .mobile-progress-dot { display: block; width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%; background: conic-gradient(#2858b2 var(--section-progress, 0deg), #e2e8ef 0); outline: 1px solid #d0dbe6; outline-offset: 1px; }
+  .mobile-progress-dot { display: block; width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%; background: conic-gradient(#2855aa var(--section-progress, 0deg), #e2e8ef 0); outline: 1px solid #d0dbe6; outline-offset: 1px; }
   .mobile-progress-step.is-current { color: #1e4d99; font-weight: 800; }
-  .mobile-progress-step.is-current .mobile-progress-dot { outline-color: #2858b2; outline-offset: 3px; }
-  .mobile-progress-step.is-read .mobile-progress-dot { background: #2858b2; outline-color: #2858b2; }
+  .mobile-progress-step.is-current .mobile-progress-dot { outline-color: #2855aa; outline-offset: 3px; }
+  .mobile-progress-step.is-read .mobile-progress-dot { background: #2855aa; outline-color: #2855aa; }
   .mobile-progress-label { white-space: nowrap; }
   .mobile-ready main :is(section, article, div)[id], .mobile-ready #walkthrough { scroll-margin-top: 12px; }
   #reading-progress { z-index: 100; }
@@ -210,6 +210,7 @@
   .access-form-side { padding: 32px 22px calc(32px + env(safe-area-inset-bottom, 0px)); }
   .access-content { max-width: 100%; }
   #access-password { font-size: 16px; min-width: 0; }
+  #access-show { min-width: 60px; min-height: 44px; white-space: nowrap; }
 }
 @media (max-width: 360px) {
   .mobile-progress-label { font-size: 9px; }

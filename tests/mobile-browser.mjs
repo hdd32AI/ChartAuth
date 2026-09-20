@@ -26,7 +26,13 @@ async function audit(page, label, mobile = true) {
       const r = node.getBoundingClientRect();
       return r.width > 0 && r.height > 0 && (r.left < -1 || r.right > width + 1);
     }).slice(0, 12).map((node) => ({ tag: node.tagName, id: node.id, class: String(node.className), rect: rect(node.getBoundingClientRect()) }));
-    return { width, documentWidth: document.documentElement.scrollWidth, bodyWidth: document.body.scrollWidth,
+    const sectionControls = [...header.querySelectorAll('.mobile-progress-step')].map((control) => {
+      const id = control.getAttribute('aria-controls');
+      const matches = [...document.querySelectorAll('[id]')].filter((node) => node.id === id);
+      const target = matches[0];
+      return { id, count: matches.length, visible: !!target && !target.closest('[hidden]') && target.getClientRects().length > 0 };
+    });
+    return { width, documentWidth: document.documentElement.scrollWidth, bodyWidth: document.body.scrollWidth, sectionControls,
       centeredBy: Math.abs((b.left + b.right) / 2 - width / 2), header: rect(h), brand: rect(b), toggle: rect(t),
       sticky: getComputedStyle(header).position, progressCount: header.querySelectorAll('.mobile-progress-step').length,
       rootOverflow: getComputedStyle(document.documentElement).overflowX, menuHidden: header.querySelector('.mobile-main-menu').hidden, offenders };
@@ -40,6 +46,7 @@ async function audit(page, label, mobile = true) {
     assert.equal(result.sticky, 'sticky', `${label}: header is not sticky`);
     assert.ok(result.brand.right <= result.toggle.left + 1, `${label}: menu overlaps brand`);
     assert.ok(result.progressCount >= 3 && result.progressCount <= 6, `${label}: missing section navigation`);
+    assert.ok(result.sectionControls.every((target) => target.count === 1 && target.visible), `${label}: section controls must target one visible section: ${JSON.stringify(result.sectionControls)}`);
     assert.ok(!['hidden', 'clip'].includes(result.rootOverflow), `${label}: root overflow is masked rather than fixed`);
   }
 }
@@ -75,6 +82,13 @@ try {
           assert.ok(heading.y <= header.height + 20, `${name}: anchor offset leaves excess blank space`);
           assert.equal(await page.locator('.mobile-progress-step[aria-current="location"] .mobile-progress-label').textContent(), 'Demo');
           await audit(page, `${name}-walkthrough`); await shot(page, `${name}-walkthrough`);
+          for (let chapter = 0; chapter < 6; chapter++) {
+            const tab = page.locator(`[data-chapter="${chapter}"]`);
+            await tab.click();
+            await page.waitForFunction((index) => document.querySelector(`[data-chapter="${index}"]`)?.getAttribute('aria-selected') === 'true', chapter);
+            await audit(page, `${name}-demo-chapter-${chapter + 1}`);
+            await shot(page, `${name}-demo-chapter-${chapter + 1}`);
+          }
           for (const section of ['Care', 'Logic', 'Build', 'Value']) {
             await jump(page, section); await audit(page, `${name}-${section}`); await shot(page, `${name}-${section}`);
           }
@@ -96,10 +110,23 @@ try {
           await audit(page, `${name}-inquiry`); await shot(page, `${name}-inquiry`);
           await page.locator('#send-query').click(); await page.waitForTimeout(200);
           await audit(page, `${name}-inquiry-sent`);
-          for (const route of ['research', 'production', 'notes']) {
-            await page.goto(`${base}/${route}`); await ready(page);
+          for (const route of ['research', 'production', 'overview']) {
+            await page.locator('.mobile-menu-toggle').click();
+            await page.locator(`.mobile-main-menu [data-page="${route}"]`).click();
+            await page.waitForSelector(`#${route}.active`); await ready(page);
+            assert.equal(await page.evaluate(() => document.activeElement?.matches('.page.active h1, .page.active h2')), true, `${name}: mobile route does not focus the new page heading`);
             await audit(page, `${name}-${route}`); await shot(page, `${name}-${route}`);
           }
+          await page.goto(`${base}/notes`); await ready(page);
+          await audit(page, `${name}-notes`); await shot(page, `${name}-notes`);
+          await page.locator('.mobile-menu-toggle').click();
+          const workspaceLink = page.locator('.mobile-main-menu a').filter({ hasText: 'Open workspace' });
+          assert.equal(await workspaceLink.isVisible(), true, `${name}: specifications menu hides Open workspace`);
+          await shot(page, `${name}-notes-menu`);
+          await workspaceLink.click(); await ready(page);
+          await page.waitForSelector('#worklist.active');
+          await audit(page, `${name}-notes-to-workspace`);
+          await page.goto(`${base}/notes`); await ready(page);
           await jump(page, 'Scale'); await audit(page, `${name}-specifications-scale`); await shot(page, `${name}-specifications-scale`);
           const accessHTML = await readFile('web/index.html', 'utf8');
           await page.route('**/access-preview', (route) => route.fulfill({ contentType: 'text/html', body: accessHTML }));

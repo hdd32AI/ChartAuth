@@ -42,7 +42,21 @@
       toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
       menu.hidden = !open;
     });
-    menu.addEventListener("click", (event) => { if (event.target.closest("a, button")) closeMenu(); });
+    menu.addEventListener("click", (event) => {
+      const control = event.target.closest("a, button");
+      if (!control) return;
+      closeMenu();
+      if (mobile.matches && control.matches("button[data-page]")) {
+        const scope = control.dataset.page === "impact"
+          ? document.querySelector("#impact")
+          : document.querySelector(".page.active");
+        const heading = scope?.querySelector("h1, h2");
+        if (heading) {
+          heading.setAttribute("tabindex", "-1");
+          heading.focus({ preventScroll: true });
+        }
+      }
+    });
     document.addEventListener("click", (event) => { if (!header.contains(event.target)) closeMenu(); });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") closeMenu(true);
@@ -96,7 +110,8 @@
         sections = planned;
         const fragment = document.createDocumentFragment();
         sections.forEach((item, index) => {
-          item.node.id ||= `mobile-section-${item.label.toLowerCase()}`;
+          const pageId = item.node.closest(".page")?.id || "specifications";
+          item.node.id ||= `mobile-section-${pageId}-${item.label.toLowerCase()}`;
           item.node.classList.add("mobile-section");
           const button = document.createElement("button");
           button.type = "button";

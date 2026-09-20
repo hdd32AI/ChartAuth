@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Arimo:wght@400;500;600;700&display=swap");
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
-  background: #f9faf5;
-  color: #12261b;
-  font-family: Manrope, Arial, sans-serif;
+  background: #fffdf8;
+  color: #18251f;
+  font-family: Arimo, Arial, sans-serif;
 }
 .access-shell {
   min-height: 100svh;
@@ -43,7 +43,7 @@ body {
 }
 .access-wordmark small {
   font:
-    9px Manrope,
+    9px Arimo,
     Arial,
     sans-serif;
   letter-spacing: 0.45em;
@@ -208,7 +208,7 @@ body {
   width: 100%;
   padding: 15px 0;
   font:
-    17px Manrope,
+    17px Arimo,
     Arial,
     sans-serif;
   color: #173023;
@@ -221,7 +221,7 @@ body {
   cursor: pointer;
   padding: 15px 0 15px 15px;
   font:
-    12px Manrope,
+    12px Arimo,
     Arial,
     sans-serif;
 }
@@ -232,7 +232,7 @@ body {
   background: #2855aa;
   color: white;
   font:
-    14px Manrope,
+    14px Arimo,
     Arial,
     sans-serif;
   border-radius: 4px;
