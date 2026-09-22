@@ -30,6 +30,10 @@ jobs:
         run: node tests/specifications-browser.mjs
       - name: Verify phone layouts and interactions
         run: node tests/mobile-browser.mjs
+      - name: Diagnose desktop navigation sequence
+        if: always()
+        continue-on-error: true
+        run: node tests/navigation-browser.mjs
       - name: Upload screenshots and audit results
         if: always()
         uses: actions/upload-artifact@v4
