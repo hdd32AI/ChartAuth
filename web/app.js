@@ -108,6 +108,7 @@ function page(name, push = true) {
       routeRoot + (name === "overview" ? "/" : "/" + name),
     );
   document.body.dataset.page = selected;
+  window.dispatchEvent(new CustomEvent("chartauth:navigate", { detail: { page: name } }));
   if (name === "impact")
     document
       .getElementById("impact")
@@ -162,6 +163,7 @@ async function run(fn) {
   if (busy) return;
   busy = true;
   document.body.classList.add("busy");
+  renderButtons();
   try {
     notice("");
     await fn();
@@ -284,7 +286,49 @@ function fillAssessment() {
   notice(
     "Suggested values follow this response and the visible workflow rules. Review before saving.",
   );
+  refreshAssessmentDraft();
 }
+function assessmentFields() {
+  const fields = queryFields();
+  delete fields.dob;
+  delete fields.last_name;
+  for (const k of assessmentKeys) {
+    let value = $("a-" + k).value;
+    if (k === "copay") value = value === "" ? null : Number(value);
+    if (k === "authorization_required")
+      value = value === "unknown" ? null : value === "true";
+    fields[k] = value;
+  }
+  fields.payment_guaranteed = $("payment-guarantee").checked;
+  return fields;
+}
+function assessmentHasChanges() {
+  if (!obs?.assessment) return false;
+  const fields = assessmentFields();
+  return [...assessmentKeys, "payment_guaranteed"].some(
+    (key) => fields[key] !== obs.assessment.fields[key],
+  );
+}
+function renderAssessmentStatus() {
+  const changed = assessmentHasChanges();
+  $("assessment-state").textContent = changed
+    ? "Changes not prepared"
+    : obs.assessment ? "Assessment prepared" : "No assessment prepared";
+  $("evidence-status").textContent = changed
+    ? "Prepare the updated assessment before saving this record."
+    : obs.assessment
+      ? "5 source references attached to this assessment."
+      : "Source references attach when you prepare the assessment.";
+}
+function refreshAssessmentDraft() {
+  if (!obs) return;
+  renderAssessmentStatus();
+  renderGuide();
+  renderButtons();
+}
+for (const id of [...assessmentKeys.map((key) => "a-" + key), "payment-guarantee"])
+  for (const event of ["input", "change"])
+    $(id).addEventListener(event, refreshAssessmentDraft);
 
 async function start(k, tour = guided) {
   const previous = { currentCase, guided, token, obs };
@@ -361,18 +405,7 @@ $("poll").onclick = () =>
 $("assessment-form").onsubmit = (e) => {
   e.preventDefault();
   run(async () => {
-    const q = queryFields();
-    delete q.dob;
-    delete q.last_name;
-    const fields = { ...q };
-    for (const k of assessmentKeys) {
-      let v = $("a-" + k).value;
-      if (k === "copay") v = v === "" ? null : Number(v);
-      if (k === "authorization_required")
-        v = v === "unknown" ? null : v === "true";
-      fields[k] = v;
-    }
-    fields.payment_guaranteed = $("payment-guarantee").checked;
+    const fields = assessmentFields();
     await api("step", {
       type: "assess",
       assessment: { fields, evidence: await evidence() },
@@ -384,6 +417,10 @@ $("assessment-form").onsubmit = (e) => {
 };
 $("save").onclick = () =>
   run(async () => {
+    if (assessmentHasChanges()) {
+      notice("Prepare the updated assessment before saving this record.", true);
+      return;
+    }
     await api("step", {
       type: "save",
       idempotency_key: "record-" + obs.episode_id,
@@ -450,13 +487,15 @@ function renderChart() {
     x.append(el("small", k), el("strong", v));
     $("encounter-context").append(x);
   }
-  document
-    .querySelectorAll("[data-chart]")
-    .forEach((b) =>
-      b.classList.toggle("active", b.dataset.chart === chartRole),
-    );
+  document.querySelectorAll("[data-chart]").forEach((button) => {
+    const selected = button.dataset.chart === chartRole;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-selected", String(selected));
+    button.tabIndex = selected ? 0 : -1;
+  });
   const d = obs.source_documents[chartRole],
     c = $("chart-content");
+  c.setAttribute("aria-labelledby", "chart-tab-" + chartRole);
   c.replaceChildren();
   const layouts = {
     patient: [
@@ -647,6 +686,10 @@ function renderGuide() {
       "Compare the returned member to the chart. Use the response to draft the result, then prepare the assessment.";
     label = "Use response values";
     fn = fillAssessment;
+  } else if (assessmentHasChanges() && !obs.records.length) {
+    text = "The form has changed. Prepare the updated assessment before saving the eligibility record.";
+    label = "Prepare assessment";
+    fn = () => $("assessment-form").requestSubmit();
   } else if (!obs.records.length) {
     text =
       "The prepared assessment includes source fingerprints. Save one record with the result and responsible next team.";
@@ -668,7 +711,7 @@ function renderButtons() {
   for (const id of ["prefill-query", "send-query"])
     $(id).disabled = busy || closed || !!obs.inquiries.length;
   queryKeys.forEach(
-    (k) => ($("q-" + k).disabled = closed || !!obs.inquiries.length),
+    (k) => ($("q-" + k).disabled = busy || closed || !!obs.inquiries.length),
   );
   $("poll").disabled = busy || closed || !obs.inquiries.length;
   $("prefill-assessment").disabled = $("prepare").disabled =
@@ -676,12 +719,12 @@ function renderButtons() {
   assessmentKeys.forEach(
     (k) =>
       ($("a-" + k).disabled =
-        closed || !obs.payer_response || !!obs.records.length),
+        busy || closed || !obs.payer_response || !!obs.records.length),
   );
   $("payment-guarantee").disabled =
-    closed || !obs.payer_response || !!obs.records.length;
+    busy || closed || !obs.payer_response || !!obs.records.length;
   $("save").disabled =
-    busy || closed || !obs.assessment || !!obs.records.length;
+    busy || closed || !obs.assessment || assessmentHasChanges() || !!obs.records.length;
   $("finish").disabled = busy || closed || !obs.records.length;
   $("reset-case").disabled = busy;
   $("guide-next").disabled = busy;
@@ -739,12 +782,7 @@ function render() {
       " · " +
       human(obs.inquiries[0].status)
     : "No inquiry sent";
-  $("assessment-state").textContent = obs.assessment
-    ? "Assessment prepared"
-    : "No assessment prepared";
-  $("evidence-status").textContent = obs.assessment
-    ? "5 source references attached to this assessment."
-    : "Source references attach when you prepare the assessment.";
+  renderAssessmentStatus();
   renderChart();
   renderResponse();
   $("events").replaceChildren();

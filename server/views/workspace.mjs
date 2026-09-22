@@ -501,13 +501,13 @@ export default `<!doctype html>
 <h3>Patient chart</h3>
 <span>Read only</span>
 </div>
-<div class="chart-tabs" role="tablist" aria-label="Chart sections">
-<button data-chart="patient" class="active">Patient</button>
-<button data-chart="coverage">Coverage</button>
-<button data-chart="visit">Visit</button>
-<button data-chart="policy">Policy</button>
+<div class="chart-tabs" role="tablist" aria-label="Chart sections" aria-orientation="horizontal">
+<button type="button" id="chart-tab-patient" data-chart="patient" class="active" role="tab" aria-selected="true" aria-controls="chart-content" tabindex="0">Patient</button>
+<button type="button" id="chart-tab-coverage" data-chart="coverage" role="tab" aria-selected="false" aria-controls="chart-content" tabindex="-1">Coverage</button>
+<button type="button" id="chart-tab-visit" data-chart="visit" role="tab" aria-selected="false" aria-controls="chart-content" tabindex="-1">Visit</button>
+<button type="button" id="chart-tab-policy" data-chart="policy" role="tab" aria-selected="false" aria-controls="chart-content" tabindex="-1">Policy</button>
 </div>
-<div id="chart-content">
+<div id="chart-content" role="tabpanel" aria-labelledby="chart-tab-patient" tabindex="0">
 </div>
 <details class="raw">
 <summary>Source record and fingerprint</summary>

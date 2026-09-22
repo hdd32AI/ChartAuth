@@ -592,16 +592,19 @@ for (const selector of ["[data-chapter]", "[data-compare]", "[data-chart]"]) {
           ? available.length - 1
           : (current + (event.key === "ArrowRight" ? 1 : -1) + available.length) % available.length;
       event.preventDefault();
-      available[next].focus();
-      available[next].click();
+      if (selector === "[data-chart]") {
+        tabs.forEach((button) => { button.tabIndex = button === available[next] ? 0 : -1; });
+        available[next].focus();
+      } else {
+        available[next].focus();
+        available[next].click();
+      }
     });
   }
 }
 compare("A");
 show(0);
-document
-  .querySelectorAll("button[data-page]")
-  .forEach((b) => b.addEventListener("click", pause));
+window.addEventListener("chartauth:navigate", pause);
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) pause();
 });

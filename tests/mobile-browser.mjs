@@ -156,6 +156,77 @@ try {
         assert.equal(await desktop.locator('.mobile-menu-toggle').isVisible(), false);
         assert.equal(await desktop.locator('.mobile-main-menu').isVisible(), true);
         await shot(desktop, `${engineName}-desktop`);
+        await desktop.locator('#demo-play').click();
+        await desktop.waitForFunction(() => document.getElementById('demo-play').getAttribute('aria-label') === 'Pause walkthrough');
+        await desktop.locator('#demo-try').click();
+        await desktop.waitForSelector('#worklist.active #case-view:not([hidden])');
+        assert.equal(await desktop.locator('#demo-play').getAttribute('aria-label'), 'Play walkthrough', `${engineName}: opening a case leaves playback running`);
+        const chartTabs = desktop.locator('.chart-tabs [role="tab"]');
+        assert.equal(await chartTabs.count(), 4);
+        assert.equal(await desktop.locator('.chart-tabs [aria-selected="true"]').count(), 1);
+        await desktop.locator('#chart-tab-patient').focus();
+        await desktop.keyboard.press('ArrowRight');
+        assert.equal(await desktop.evaluate(() => document.activeElement.id), 'chart-tab-coverage');
+        assert.equal(await desktop.locator('#chart-tab-patient').getAttribute('aria-selected'), 'true', `${engineName}: manual tabs must wait for activation`);
+        await desktop.keyboard.press('Enter');
+        await desktop.waitForFunction(() => document.getElementById('chart-tab-coverage').getAttribute('aria-selected') === 'true');
+        assert.equal(await desktop.locator('#chart-content').getAttribute('role'), 'tabpanel');
+        assert.equal(await desktop.locator('#chart-content').getAttribute('aria-labelledby'), 'chart-tab-coverage');
+        assert.equal(await desktop.locator('#chart-tab-coverage').getAttribute('aria-controls'), 'chart-content');
+        assert.equal(await desktop.locator('.chart-tabs [tabindex="0"]').count(), 1);
+        await desktop.waitForFunction(() => !document.body.classList.contains('busy'));
+        await desktop.keyboard.press('Home');
+        assert.equal(await desktop.evaluate(() => document.activeElement.id), 'chart-tab-patient');
+        await desktop.keyboard.press('Space');
+        await desktop.waitForFunction(() => document.getElementById('chart-tab-patient').getAttribute('aria-selected') === 'true' && !document.body.classList.contains('busy'));
+        reports.push({ label: `${engineName}-chart-tabs-accessibility`, passed: true });
+        await desktop.locator('#prefill-query').click();
+        await desktop.locator('#send-query').click();
+        await desktop.waitForFunction(() => !document.getElementById('poll').disabled);
+        await desktop.locator('#poll').click();
+        await desktop.waitForFunction(() => !document.getElementById('prefill-assessment').disabled);
+        await desktop.locator('#prefill-assessment').click();
+        await desktop.locator('#prepare').click();
+        await desktop.waitForFunction(() => !document.getElementById('save').disabled);
+        await desktop.locator('#a-copay').fill('31');
+        assert.equal(await desktop.locator('#save').isDisabled(), true, `${engineName}: an unprepared edit can be saved`);
+        assert.equal(await desktop.locator('#assessment-state').textContent(), 'Changes not prepared');
+        assert.equal(await desktop.locator('#guide-next').textContent(), 'Prepare assessment');
+        await desktop.locator('#guide-next').click();
+        await desktop.waitForFunction(() => !document.getElementById('save').disabled);
+        assert.equal(await desktop.locator('#assessment-state').textContent(), 'Assessment prepared');
+        await desktop.locator('#payment-guarantee').check();
+        assert.equal(await desktop.locator('#save').isDisabled(), true, `${engineName}: a changed confirmation can be saved`);
+        await desktop.locator('#payment-guarantee').uncheck();
+        assert.equal(await desktop.locator('#save').isEnabled(), true, `${engineName}: restoring prepared values should permit saving`);
+        reports.push({ label: `${engineName}-assessment-draft`, passed: true });
+        let releaseSave;
+        const holdSave = new Promise((resolve) => { releaseSave = resolve; });
+        const holdSaveRequest = async (route) => {
+          if (route.request().postDataJSON()?.type === 'save') await holdSave;
+          await route.continue();
+        };
+        await desktop.route('**/api/step', holdSaveRequest);
+        const pendingSave = desktop.waitForRequest((request) => request.url().endsWith('/api/step') && request.postDataJSON()?.type === 'save', { timeout: 5000 });
+        await desktop.locator('#save').click();
+        await pendingSave;
+        try {
+          assert.equal(await desktop.locator('#a-copay').isDisabled(), true, `${engineName}: pending Save leaves the draft editable`);
+          assert.equal(await desktop.locator('#payment-guarantee').isDisabled(), true, `${engineName}: pending Save leaves the confirmation editable`);
+          assert.equal(await desktop.locator('#save').isDisabled(), true, `${engineName}: pending Save remains actionable`);
+        } finally { releaseSave(); }
+        await desktop.waitForFunction(() => !document.getElementById('saved-record').hidden && !document.body.classList.contains('busy'));
+        await desktop.unroute('**/api/step', holdSaveRequest);
+        assert.equal(await desktop.locator('#a-copay').inputValue(), '31');
+        assert.equal(await desktop.locator('#assessment-state').textContent(), 'Assessment prepared');
+        reports.push({ label: `${engineName}-pending-save`, passed: true });
+        await desktop.locator('.topbar [data-page="overview"]').click();
+        await desktop.locator('#demo-play').click();
+        await desktop.waitForFunction(() => document.getElementById('demo-play').getAttribute('aria-label') === 'Pause walkthrough');
+        await desktop.goBack();
+        await desktop.waitForSelector('#worklist.active');
+        assert.equal(await desktop.locator('#demo-play').getAttribute('aria-label'), 'Play walkthrough', `${engineName}: history navigation leaves playback running`);
+        reports.push({ label: `${engineName}-playback-navigation`, passed: true });
       } catch (error) { failures.push({ name: `${engineName}-desktop`, error: error.stack }); }
       finally { await desktop.close(); }
     } finally { await browser.close(); }
