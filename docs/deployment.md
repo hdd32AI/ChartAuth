@@ -28,3 +28,9 @@ Set the public API endpoint and public platform key in `web/config.js`. Match th
 ## Release checks
 
 Run `npm test` and `python3 reference/benchmark_audit/reproduce.py`. On the deployed site, verify password access, worklist loading, the guided workflow, reset and replay, notes, linked sources and the financial calculator. Confirm every referenced asset loads, the page fits narrow screens and the final share image resolves. Keep the final public domain on the reviewed deployment.
+
+### Browser coverage
+
+The automated browser gate uses Playwright 1.63.0 with Chromium and WebKit. It checks phone widths of 320, 375, 393 and 430 pixels, a 760-pixel tablet, 844-pixel landscape and a 1440-pixel desktop. Coverage includes navigation, keyboard tabs, assessment edits, saving during a delayed response and the specifications page. These are browser-emulation checks, not physical-device or native Windows/macOS certification.
+
+A comparison with the older Playwright 1.56.0 WebKit build reproduced a browser-process failure when opening the specifications after saving an assessment and navigating Back. The same sequence passes in the current engine. That older-engine compatibility finding remains unresolved; do not describe the release as verified across every browser version.
