@@ -1,5 +1,5 @@
 /* Mobile refinement, deliberately separate from the desktop presentation. */
-.mobile-menu-toggle, .mobile-progress { display: none; }
+.mobile-menu-toggle, .mobile-header > .mobile-progress { display: none; }
 .mobile-table-scroll { display: contents; }
 @media (max-width: 760px), (max-height: 500px) and (max-width: 960px) {
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -61,7 +61,7 @@
   #reading-progress { z-index: 100; }
   /* Natural-height sections: no forced snapping or cropped viewport panels. */
   .page { padding: 30px 18px 44px; }
-  #overview { padding: 0; }
+  #overview.page { padding: 0; }
   #overview > :is(.editorial-hero, .cinema, .care-purpose, .decision-section, .evidence-section, .production-preview, .impact-section, .prepared-for) { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
   .editorial-hero { display: block; padding-top: 34px; padding-bottom: 38px; }
   .editorial-hero h1 { font-size: clamp(35px, 9.2vw, 49px); line-height: 1.12; letter-spacing: -1.6px; margin: 18px 0 22px; }
@@ -98,7 +98,7 @@
   .cinema-heading { display: block; }
   .scene-tag { margin-top: 14px; white-space: normal; }
   .tour-scenario-label { display: grid; padding: 0 0 18px; gap: 8px; }
-  .tour-scenario-label select { width: 100%; font-size: 16px; color: #12231b; background: #fff; }
+  .tour-scenario-label select { width: 100%; font-size: 16px; color: #12231b; background-color: #fff; color-scheme: light; }
   .demo-stage { min-height: 0; }
   .demo-body { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .demo-sidebar, .demo-clock, .demo-wordmark > span { display: none; }

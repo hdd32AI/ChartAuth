@@ -1976,11 +1976,18 @@ img.chartauth-mark {
     sans-serif;
 }
 .tour-scenario-label select {
-  background: #182c3a;
+  -webkit-appearance: none;
+  appearance: none;
+  color-scheme: dark;
+  background-color: #182c3a;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 19px) 50%, calc(100% - 14px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
   color: #f2f6f9;
   border: 1px solid #405767;
   border-radius: 9px;
-  padding: 11px 16px;
+  padding: 11px 38px 11px 16px;
   max-width: 100%;
   font:
     500 14px Arimo,

@@ -51,6 +51,21 @@ async function audit(page, label, mobile = true) {
   }
 }
 async function shot(page, name) { await page.screenshot({ path: `${out}/${name}.png`, fullPage: false, animations: 'disabled' }); }
+async function auditSpecificationsHero(page, label) {
+  const layout = await page.evaluate(() => {
+    const header = document.querySelector('.reader-header').getBoundingClientRect();
+    const width = document.documentElement.clientWidth;
+    return { width, headerBottom: header.bottom, content: ['.paper-hero h1', '.paper-hero .paper-deck'].map((selector) => {
+      const r = document.querySelector(selector).getBoundingClientRect();
+      return { selector, left: r.left, right: r.right, top: r.top };
+    }) };
+  });
+  for (const item of layout.content) {
+    assert.ok(item.left >= 16 && item.right <= layout.width - 16, `${label}: specifications hero lacks readable side insets: ${JSON.stringify(layout)}`);
+    assert.ok(item.top >= layout.headerBottom + 16, `${label}: specifications hero touches the header: ${JSON.stringify(layout)}`);
+  }
+  reports.push({ label: `${label}-hero-insets`, ...layout });
+}
 async function jump(page, label) {
   await page.locator('.mobile-progress-step').filter({ has: page.locator('.mobile-progress-label', { hasText: label }) }).first().click();
   await page.waitForTimeout(150);
@@ -118,6 +133,7 @@ try {
             await audit(page, `${name}-${route}`); await shot(page, `${name}-${route}`);
           }
           await page.goto(`${base}/notes`); await ready(page);
+          await auditSpecificationsHero(page, `${name}-notes`);
           await audit(page, `${name}-notes`); await shot(page, `${name}-notes`);
           await page.locator('.mobile-menu-toggle').click();
           const workspaceLink = page.locator('.mobile-main-menu a').filter({ hasText: 'Open workspace' });
@@ -151,17 +167,35 @@ try {
         } finally { await context.close(); }
       }
       const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+      const desktopErrors = [], desktopSteps = [];
+      let desktopStage = 'initial layout';
+      const stage = (name) => { desktopStage = name; console.log(`DESKTOP_STAGE ${engineName}: ${name}`); };
+      desktop.on('pageerror', (error) => desktopErrors.push(error.message));
+      desktop.on('request', (request) => {
+        if (request.url().endsWith('/api/step')) desktopSteps.push({ event: 'request', type: request.postDataJSON()?.type });
+      });
+      desktop.on('response', async (response) => {
+        if (!response.url().endsWith('/api/step')) return;
+        try {
+          const data = await response.json();
+          desktopSteps.push({ event: 'response', type: response.request().postDataJSON()?.type, status: response.status(), error: data.error,
+            actionCount: data.observation?.action_count, assessmentCopay: data.observation?.assessment?.fields?.copay, records: data.observation?.records?.length });
+        } catch (error) { desktopSteps.push({ event: 'response-error', error: error.message }); }
+      });
       try {
         await desktop.goto(base); await ready(desktop); await audit(desktop, `${engineName}-desktop`, false);
         assert.equal(await desktop.locator('.mobile-menu-toggle').isVisible(), false);
         assert.equal(await desktop.locator('.mobile-main-menu').isVisible(), true);
+        assert.equal(await desktop.locator('.mobile-progress').isVisible(), false, `${engineName}: mobile section controls leak onto desktop`);
         await shot(desktop, `${engineName}-desktop`);
+        stage('playback and opening a case');
         await desktop.locator('#demo-play').click();
         await desktop.waitForFunction(() => document.getElementById('demo-play').getAttribute('aria-label') === 'Pause walkthrough');
         await desktop.locator('#demo-try').click();
         await desktop.waitForSelector('#worklist.active #case-view:not([hidden])');
         assert.equal(await desktop.locator('#demo-play').getAttribute('aria-label'), 'Play walkthrough', `${engineName}: opening a case leaves playback running`);
         const chartTabs = desktop.locator('.chart-tabs [role="tab"]');
+        stage('chart keyboard tabs');
         assert.equal(await chartTabs.count(), 4);
         assert.equal(await desktop.locator('.chart-tabs [aria-selected="true"]').count(), 1);
         await desktop.locator('#chart-tab-patient').focus();
@@ -180,6 +214,7 @@ try {
         await desktop.keyboard.press('Space');
         await desktop.waitForFunction(() => document.getElementById('chart-tab-patient').getAttribute('aria-selected') === 'true' && !document.body.classList.contains('busy'));
         reports.push({ label: `${engineName}-chart-tabs-accessibility`, passed: true });
+        stage('inquiry and initial assessment');
         await desktop.locator('#prefill-query').click();
         await desktop.locator('#send-query').click();
         await desktop.waitForFunction(() => !document.getElementById('poll').disabled);
@@ -192,14 +227,27 @@ try {
         assert.equal(await desktop.locator('#save').isDisabled(), true, `${engineName}: an unprepared edit can be saved`);
         assert.equal(await desktop.locator('#assessment-state').textContent(), 'Changes not prepared');
         assert.equal(await desktop.locator('#guide-next').textContent(), 'Prepare assessment');
-        await desktop.locator('#guide-next').click();
-        await desktop.waitForFunction(() => !document.getElementById('save').disabled);
+        stage('guided reprepare after editing copay');
+        const isAssess = (request) => request.url().endsWith('/api/step') && request.postDataJSON()?.type === 'assess';
+        const [, assessResponse] = await Promise.all([
+          desktop.waitForRequest(isAssess, { timeout: 5000 }),
+          desktop.waitForResponse((response) => isAssess(response.request()), { timeout: 5000 }),
+          desktop.locator('#guide-next').click(),
+        ]);
+        const assessed = await assessResponse.json();
+        assert.equal(assessResponse.ok(), true, `${engineName}: guided assessment failed: ${JSON.stringify(assessed)}`);
+        assert.equal(assessed.observation?.assessment?.fields?.copay, 31, `${engineName}: guided assessment submitted stale copay`);
+        await desktop.waitForFunction(() => !document.getElementById('save').disabled, null, { timeout: 5000 });
         assert.equal(await desktop.locator('#assessment-state').textContent(), 'Assessment prepared');
+        stage('confirmation changes invalidate prepared assessment');
+        await desktop.locator('details.assurance > summary').click();
+        assert.equal(await desktop.locator('#payment-guarantee').isVisible(), true);
         await desktop.locator('#payment-guarantee').check();
         assert.equal(await desktop.locator('#save').isDisabled(), true, `${engineName}: a changed confirmation can be saved`);
         await desktop.locator('#payment-guarantee').uncheck();
         assert.equal(await desktop.locator('#save').isEnabled(), true, `${engineName}: restoring prepared values should permit saving`);
         reports.push({ label: `${engineName}-assessment-draft`, passed: true });
+        stage('controls during a delayed save');
         let releaseSave;
         const holdSave = new Promise((resolve) => { releaseSave = resolve; });
         const holdSaveRequest = async (route) => {
@@ -220,6 +268,7 @@ try {
         assert.equal(await desktop.locator('#a-copay').inputValue(), '31');
         assert.equal(await desktop.locator('#assessment-state').textContent(), 'Assessment prepared');
         reports.push({ label: `${engineName}-pending-save`, passed: true });
+        stage('playback during history navigation');
         await desktop.locator('.topbar [data-page="overview"]').click();
         await desktop.locator('#demo-play').click();
         await desktop.waitForFunction(() => document.getElementById('demo-play').getAttribute('aria-label') === 'Pause walkthrough');
@@ -227,7 +276,26 @@ try {
         await desktop.waitForSelector('#worklist.active');
         assert.equal(await desktop.locator('#demo-play').getAttribute('aria-label'), 'Play walkthrough', `${engineName}: history navigation leaves playback running`);
         reports.push({ label: `${engineName}-playback-navigation`, passed: true });
-      } catch (error) { failures.push({ name: `${engineName}-desktop`, error: error.stack }); }
+        stage('desktop specifications');
+        await desktop.goto(`${base}/notes`); await ready(desktop);
+        assert.equal(await desktop.locator('.mobile-progress').isVisible(), false, `${engineName}: specifications mobile controls leak onto desktop`);
+        await auditSpecificationsHero(desktop, `${engineName}-desktop-notes`);
+        await shot(desktop, `${engineName}-desktop-notes`);
+        assert.deepEqual(desktopErrors, [], `${engineName}: desktop browser exceptions`);
+      } catch (error) {
+        const state = await desktop.evaluate(() => {
+          const form = document.getElementById('assessment-form');
+          return { url: location.pathname, busy: document.body.classList.contains('busy'), notice: document.getElementById('notice')?.textContent,
+            guide: document.getElementById('guide-next')?.textContent, assessment: document.getElementById('assessment-state')?.textContent,
+            saveDisabled: document.getElementById('save')?.disabled, assuranceOpen: document.querySelector('details.assurance')?.open,
+            fields: form ? [...form.elements].map((field) => ({ id: field.id, value: field.value, disabled: field.disabled,
+              checked: field.type === 'checkbox' ? field.checked : undefined, valid: field.validity?.valid, validationMessage: field.validationMessage })) : [] };
+        }).catch((failure) => ({ diagnosticError: failure.message }));
+        const failure = { name: `${engineName}-desktop`, stage: desktopStage, error: error.stack, state, browserErrors: desktopErrors, steps: desktopSteps };
+        failures.push(failure);
+        console.error(`DESKTOP_QA_FAILURE ${JSON.stringify(failure)}`);
+        await shot(desktop, `${engineName}-desktop-FAIL`).catch(() => {});
+      }
       finally { await desktop.close(); }
     } finally { await browser.close(); }
   }

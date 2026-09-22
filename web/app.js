@@ -701,8 +701,8 @@ function renderGuide() {
     label = "Finish and verify";
     fn = () => $("finish").click();
   }
-  $("guide-text").textContent = text;
-  $("guide-next").textContent = label;
+  if ($("guide-text").textContent !== text) $("guide-text").textContent = text;
+  if ($("guide-next").textContent !== label) $("guide-next").textContent = label;
   $("guide-next").onclick = fn;
 }
 function renderButtons() {
