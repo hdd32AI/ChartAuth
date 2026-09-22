@@ -21,6 +21,9 @@ jobs:
         run: npx playwright install --with-deps chromium webkit > /tmp/browser-install.log 2>&1 || { tail -80 /tmp/browser-install.log; exit 1; }
       - name: Verify existing environment tests
         run: npm test
+      - name: Diagnose specifications rendering in isolated WebKit processes
+        continue-on-error: true
+        run: node tests/specifications-browser.mjs
       - name: Verify phone layouts and interactions
         run: node tests/mobile-browser.mjs
       - name: Upload screenshots and audit results
