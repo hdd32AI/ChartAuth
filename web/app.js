@@ -113,7 +113,7 @@ function page(name, push = true) {
     document
       .getElementById("impact")
       .scrollIntoView({ behavior: scrollBehavior(), block: "start" });
-  else window.scrollTo({ top: 0, behavior: scrollBehavior() });
+  else window.scrollTo({ top: 0, behavior: "instant" });
 }
 function restoreRoute() {
   const part = location.pathname.split("/").filter(Boolean).pop();
