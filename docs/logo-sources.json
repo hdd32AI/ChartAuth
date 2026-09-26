@@ -81,15 +81,6 @@
     "transformation": "Removed optional authoring metadata and unused editor namespace declarations; visual artwork preserved."
   },
   {
-    "file": "flagler.png",
-    "source_page": "https://www.flaglerhealth.io/",
-    "acquisition": "Existing supplied logo crop. Official website listed for brand identification; this crop was not downloaded as a standalone asset.",
-    "dimensions": "450 x 118",
-    "transformation": "Removed optional EXIF, XMP, ICC and resolution metadata. Pixel content unchanged.",
-    "source_sha256": "f1526977a76623e49360288564499f3c619d7973572fd019874f4ca21f3f65d1",
-    "deployed_sha256": "11e3b3ce27eefa7408c9faaacd7b4479eae257ea4f54eb2ea67e29ce2a4a7686"
-  },
-  {
     "file": "alaska.png",
     "source_page": "https://www.alaskalabs.ai/",
     "acquisition": "Existing supplied logo crop. Official website listed for brand identification; this crop was not downloaded as a standalone asset.",

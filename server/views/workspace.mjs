@@ -363,10 +363,6 @@ export default `<!doctype html>
 <p>Eligibility. Evidence. Accountable handoffs.</p>
 </div>
 <div class="partner-lockup">
-<a href="https://www.flaglerhealth.io/" target="_blank" rel="noreferrer">
-<img src="assets/flagler.png" alt="Flagler">
-</a>
-<span class="partner-cross" aria-hidden="true">×</span>
 <a href="https://www.alaskalabs.ai/" target="_blank" rel="noreferrer">
 <img src="assets/alaska.png" alt="Alaska AI">
 </a>

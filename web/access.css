@@ -135,9 +135,6 @@ body {
     opacity 0.2s,
     transform 0.2s;
 }
-.access-company-flagler {
-  background: #fffdfb;
-}
 .access-company-alaska {
   background: #0b0e13;
 }
@@ -155,11 +152,6 @@ body {
   width: 100%;
   height: auto;
   object-fit: contain;
-}
-.access-company-times {
-  color: #8ea7b5;
-  font-size: 13px;
-  font-weight: 400;
 }
 .access-form-side {
   display: flex;

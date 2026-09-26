@@ -829,11 +829,6 @@ main {
   height: 46px;
   object-fit: contain;
 }
-.partner-cross {
-  color: #8e9a8b;
-  font-size: 22px;
-  font-weight: 300;
-}
 .prepared-for > small {
   width: 100%;
   font-size: 9px;
